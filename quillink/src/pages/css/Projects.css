@@ -1,0 +1,20 @@
+.p-toggler {
+    display: inline-flex;
+    
+    font-size: 2em;
+    width: 100%;
+}
+
+.toggle {
+    display: block; 
+    width: 50%;
+    padding: 10px 10px 10px 10px;
+}
+
+.toggled {
+    border-bottom: 2px solid royalblue;
+}
+
+#first-toggle {
+    border-right: 2px solid royalblue;
+}
