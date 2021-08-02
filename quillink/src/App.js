@@ -26,8 +26,15 @@ function App() {
         }
         .btn{
           background-color: #454ADE !important;
+          border-color: #454ADE !important;
           font-weight: 700 !important;
         }
+
+        .active{
+          background-color: #454ADE !important;
+        }
+
+
         `}
         
       </style>
