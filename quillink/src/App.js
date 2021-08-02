@@ -34,6 +34,10 @@ function App() {
           background-color: #454ADE !important;
         }
 
+        *{
+          font-family: 'Raleway', sans-serif;
+        }
+
 
         `}
         
