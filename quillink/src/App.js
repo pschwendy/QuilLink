@@ -3,6 +3,7 @@ import './App.css';
 import Projects from './pages/Projects';
 import SideBar from './components/SideBar';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Route, Switch } from 'react-router-dom';
 import './pages/css/main.css'
 
 function App() {
@@ -11,7 +12,9 @@ function App() {
       <Container style={{position: "relative"}}>
       <div id="page">
         <SideBar id="the-side-bar"/>
-        <Projects className="main-page"/>
+        <Switch>
+          <Route exact path='/' component={Projects}/>
+        </Switch>
       </div>
       </Container>
     </div>

@@ -1,0 +1,27 @@
+{
+  "name": "quillink",
+  "version": "1.0.0",
+  "description": "The writer's sharing app YO WASSUP HOMIE, the sqrt of 100 is 10",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "react-bootstrap": "^1.6.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pschwendy/QuilLink.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pschwendy/QuilLink/issues"
+  },
+  "homepage": "https://github.com/pschwendy/QuilLink#readme"
+}
