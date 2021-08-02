@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './css/SideBar.css';
-import { Card } from "react-bootstrap";
+import { Card, Button} from "react-bootstrap";
 import './css/Notifications.css';
 
 function Notifications() {
@@ -14,7 +14,7 @@ function Notifications() {
     return (
         <div id="notif-bar">
             <Card id="notification-center">
-                <span className="notif-toggler">
+                <span className="notif-toggler bolded">
                     <div onClick={ToggleProjects} className="toggle" id="first-toggle">
                         <div className={toggle === true ?  "toggled": ""}> My Projects</div> 
                     </div>
@@ -26,7 +26,7 @@ function Notifications() {
                     { toggle === true ? 
                     <div>
                         <div className="notification">
-                        David made 8 comments on your project
+                        David made 8 comments on your project <Button className="pull-right" size="sm" variant="primary">Open</Button>
                         </div>
                         <div className="notification">
                             David made 8 comments on your project

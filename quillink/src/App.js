@@ -15,9 +15,26 @@ import './pages/css/main.css'
 function App() {
   return (
     <div className="App">
+      <link rel="preconnect" href="https://fonts.googleapis.com"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;800&display=swap" rel="stylesheet"></link>
+      <style>
+        {`
+        .bolded{
+          font-family: 'Raleway', sans-serif;
+          font-weight: 700;
+        }
+        .btn{
+          background-color: #454ADE !important;
+          font-weight: 700 !important;
+        }
+        `}
+        
+      </style>
+      
       <Container style={{position: "relative"}}>
       <div id="page">
-        <Col sm={3} className="side-info">
+        <Col sm={3} className="side-info bolded">
           <SideBar/>
         </Col>
         <Col sm={6}>
