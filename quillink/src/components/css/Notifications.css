@@ -1,0 +1,23 @@
+#notif-bar {
+    flex-grow: 1;
+    justify-self: right;
+    width: 300px;
+    height: 100vh;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#notification-center {
+    height: 100%;
+}
+
+.notification {
+    padding: 4px 4px 4px 4px;
+    text-align: left;
+    border-top: 1px solid whitesmoke;
+}
+
+.notif-toggler {
+    font-size: 1.2em;
+    display: inline-flex;
+}

@@ -2,6 +2,13 @@
     width: 100%;
     flex-basis: 0;
     flex-grow: 999;
+    max-height: 100vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+#projects::-webkit-scrollbar {
+    display: none;
 }
 
 #project-list {

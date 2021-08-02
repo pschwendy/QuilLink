@@ -20,6 +20,14 @@ function Explore() {
             title="Novel 3"
             description="Novel 3 is the best novel ever created"
             />
+            <ShareCard
+            title="Novel 3"
+            description="Novel 3 is the best novel ever created"
+            />
+            <ShareCard
+            title="Novel 3"
+            description="Novel 3 is the best novel ever created"
+            />
         </div>
     );
 }
