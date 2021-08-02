@@ -3,6 +3,8 @@
     min-width: 100% !important;
     width: max-content;
     position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .button-holder {
@@ -12,4 +14,20 @@
 
 .go-to {
     float: right;
+}
+
+.pfp {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.username {
+    margin-left: 5px;
+}
+
+.profile-header {
+    display: inline-flex;
+    flex-wrap: wrap;
 }

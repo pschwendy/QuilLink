@@ -10,15 +10,18 @@ function SideBar() {
         </div>*/
         <div>
         <Container fluid>
-        <ListGroup>
-            <ListGroup.Item action href="/">
+        <ListGroup className="options">
+            <ListGroup.Item className="item" action href="/">
                 Projects
             </ListGroup.Item>
-            <ListGroup.Item action href="/explore">
+            <ListGroup.Item className="item" action href="/explore">
                 Explore
             </ListGroup.Item>
-            <ListGroup.Item action href="/trending">
+            <ListGroup.Item className="item" action href="/trending">
                 Trending
+            </ListGroup.Item>
+            <ListGroup.Item className="item" action href="/notifications">
+                Notifications
             </ListGroup.Item>
         </ListGroup>
         </Container>

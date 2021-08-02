@@ -12,14 +12,14 @@ function App() {
     <div className="App">
       <Container style={{position: "relative"}}>
       <div id="page">
-        <Col sm={4}>
+        <Col sm={3}>
           <SideBar id="the-side-bar"/>
         </Col>
         <Col sm={8}>
-        <Switch>
-          <Route exact path='/' component={Projects}/>
-          <Route path='/explore' component={Explore}/>
-        </Switch>
+          <Switch>
+            <Route exact path='/' component={Projects}/>
+            <Route path='/explore' component={Explore}/>
+          </Switch>
         </Col>
       </div>
       </Container>
