@@ -1,6 +1,19 @@
+#projects {
+    width: 100%;
+    flex-basis: 0;
+    flex-grow: 999;
+}
+
+#project-list {
+    margin-top: 20px;
+    position: relative;
+    display: grid;
+    align-items: center;
+    width: 100%;
+}
+
 .p-toggler {
     display: inline-flex;
-    
     font-size: 2em;
     width: 100%;
 }
@@ -9,6 +22,11 @@
     display: block; 
     width: 50%;
     padding: 10px 10px 10px 10px;
+    user-select: none;
+}
+
+.toggle:hover {
+    cursor: pointer;
 }
 
 .toggled {
@@ -16,5 +34,5 @@
 }
 
 #first-toggle {
-    border-right: 2px solid royalblue;
+    /*border-right: 2px solid royalblue;*/
 }

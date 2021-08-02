@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import ProjectCard from '../components/ProjectCard';
 import './css/Projects.css';
+import './css/main.css';
 
 function Projects() {
     useEffect(() => {
@@ -17,29 +18,34 @@ function Projects() {
     };
 
     return (
-        <div>
-            <Container>
+        <div id="projects" className="main-page">
+            <div>
                 <span className="p-toggler">
-                    <div onClick={ToggleProjects} className={toggle === true ?  "toggle toggled": "toggle"} id="first-toggle">
-                        My Projects
+                    <div onClick={ToggleProjects} className="toggle" id="first-toggle">
+                        <div className={toggle === true ?  "toggled": ""}> My Projects</div> 
                     </div>
-                    <div onClick={ToggleReviewing} className={toggle === true ?  "toggle": "toggle toggled"} >
-                        Reviewing
+                    <div onClick={ToggleReviewing} className="toggle">
+                        <div className={toggle === true ?  "": "toggled"}> Reviewing</div>
                     </div>
                 </span>
-                { toggle === true ? 
-                <div>
-                    <p>My Projects</p>
-                    
+                <div id="project-list">
+                    { toggle === true ? 
+                    <div>
+                        <ProjectCard
+                        title='My Project'
+                        description='My Review'
+                        />
+                    </div>
+                    : 
+                    <div>
+                        <ProjectCard
+                        title='My Review'
+                        description='My Review'
+                        />
+                    </div>
+                    }
                 </div>
-                : 
-                <div>
-                    Reviewing
-                    <ProjectCard/>
-                </div>
-                }
-                
-            </Container>
+            </div>
         </div>
     );
 }

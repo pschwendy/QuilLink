@@ -1,0 +1,15 @@
+.project-card {
+    text-align: left;
+    min-width: 100% !important;
+    width: max-content;
+    position: relative;
+}
+
+.button-holder {
+    width: 100%;
+    position: relative;
+}
+
+.go-to {
+    float: right;
+}
