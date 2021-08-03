@@ -20,7 +20,7 @@ function App() {
         <Col sm={3} className="side-info">
           <SideBar/>
         </Col>
-        <Col sm={6}>
+        <Col>
           <Switch>
             <Route exact path='/' component={Projects}/>
             <Route path='/explore' component={Explore}/>
