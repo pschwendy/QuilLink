@@ -2,7 +2,7 @@
     width: 100%;
     flex-basis: 0;
     flex-grow: 999;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -33,12 +33,5 @@
 
 .toggle:hover {
     cursor: pointer;
-}
-
-.toggled {
-    border-bottom: 2px solid royalblue;
-}
-
-#first-toggle {
-    /*border-right: 2px solid royalblue;*/
-}
+   
+} 

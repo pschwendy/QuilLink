@@ -16,7 +16,7 @@ function ShareCard(props) {
                 {props.description}
                 </Card.Text>
                 <div className="button-holder">
-                    <Button className="go-to" variant="primary">Go to Project &gt;&gt;</Button>
+                    <Button className="go-to" variant="primary">Go to Project</Button>
                 </div>
             </Card.Body>
         </Card>

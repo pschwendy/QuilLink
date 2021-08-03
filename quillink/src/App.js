@@ -10,29 +10,25 @@ import Notifications from './components/Notifications';
 
 import { Container, Row, Col } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
-import './pages/css/main.css'
+import './pages/css/main.css';
 
 function App() {
   return (
     <div className="App">
       
-      <Container style={{position: "relative"}}>
+      <div style={{position: "relative"}}>
       <div id="page">
-        <Col sm={3} className="side-info bolded">
-          <SideBar/>
-        </Col>
-        <Col>
-          <Switch>
-            <Route exact path='/' component={Projects}/>
-            <Route path='/explore' component={Explore}/>
-            <Route path='/doc-editor' component={DocEditor}/>
-          </Switch>
-        </Col>
-        <Col sm={3} className="side-info">
+        <SideBar className="side-area"/>
+        <Switch>
+          <Route exact path='/' component={Projects}/>
+          <Route path='/explore' component={Explore}/>
+          <Route path='/doc-editor' component={DocEditor}/>
+        </Switch>
+        {/*<Col sm={3} className="side-info">
           <Notifications/>
-        </Col>
+  </Col>*/}
       </div>
-      </Container>
+      </div>
     </div>
   );
 }

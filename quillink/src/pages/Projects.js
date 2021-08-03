@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 import ProjectCard from '../components/ProjectCard';
 import './css/Projects.css';
 import './css/main.css';
+import Notifications from '../components/Notifications';
 
 function Projects() {
     useEffect(() => {
@@ -22,10 +23,10 @@ function Projects() {
             <div>
                 <span className="p-toggler bolded">
                     <div onClick={ToggleProjects} className="toggle" id="first-toggle">
-                        <div className={toggle === true ?  "toggled": ""}> My Projects</div> 
+                        <div className = "bob" className={toggle === true ?  "toggled": ""}> <a> My Projects </a> </div> 
                     </div>
                     <div onClick={ToggleReviewing} className="toggle">
-                        <div className={toggle === true ?  "": "toggled"}> Reviewing</div>
+                        <div className = "bob" className={toggle === true ?  "": "toggled"}> <a> Reviewing </a> </div>
                     </div>
                 </span>
                 <div id="project-list">
