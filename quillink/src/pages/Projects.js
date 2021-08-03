@@ -20,7 +20,7 @@ function Projects() {
     return (
         <div id="projects" className="main-page">
             <div>
-                <span className="p-toggler">
+                <span className="p-toggler bolded">
                     <div onClick={ToggleProjects} className="toggle" id="first-toggle">
                         <div className={toggle === true ?  "toggled": ""}> My Projects</div> 
                     </div>
