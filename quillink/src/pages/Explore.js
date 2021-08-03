@@ -8,7 +8,7 @@ import Notifications from '../components/Notifications';
 
 function Explore() {
     return (
-        <div style={{display: 'flex', justifyContent: 'flex-start', flexGrow: '999'}}>
+        <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '8'}}>
             <div id="projects" className="main-page">
                 <ShareCard
                 title="Novel 1"
@@ -31,7 +31,6 @@ function Explore() {
                 description="Novel 3 is the best novel ever created"
                 />
             </div>
-            <Notifications className="side-info" />
         </div>
     );
 }

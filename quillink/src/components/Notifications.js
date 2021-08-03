@@ -13,7 +13,7 @@ function Notifications() {
     };
     return (
         <div id="notif-bar">
-            <Container fluid>
+            <div id="inner-notif">
                 <Card id="notification-center">
                     <span className="notif-toggler bolded">
                         <div onClick={ToggleProjects} className="toggle" id="first-toggle">
@@ -43,7 +43,7 @@ function Notifications() {
                         }
                     </div>
                 </Card>`
-            </Container>
+            </div>
         </div>
     );
 }

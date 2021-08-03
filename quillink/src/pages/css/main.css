@@ -13,9 +13,15 @@
     padding-left: 20px;
     padding-right: 20px;
     position: relative;
-    max-width: 80vw;
+    max-width: 100%;
     border-left: 1px solid#DFDFDF;
     border-right: 1px solid #DFDFDF;
+}
+
+@media only screen and (max-width: 1000px) {
+    .main-page  {
+        max-width: 100%;
+    }
 }
 
 @media only screen and (max-width: 1000px) {

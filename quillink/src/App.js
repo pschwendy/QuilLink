@@ -24,6 +24,7 @@ function App() {
           <Route path='/explore' component={Explore}/>
           <Route path='/doc-editor' component={DocEditor}/>
         </Switch>
+        <Notifications className="side-info" />
         {/*<Col sm={3} className="side-info">
           <Notifications/>
   </Col>*/}
