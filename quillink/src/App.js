@@ -4,9 +4,11 @@ import './App.css';
 import Projects from './pages/Projects';
 import Explore from './pages/Explore';
 import DocEditor from './pages/DocEditer';
+import NotificationsPage from "./pages/NotificationPage"
 
 import SideBar from './components/SideBar';
 import Notifications from './components/Notifications';
+
 
 import { Container, Row, Col } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
@@ -23,6 +25,7 @@ function App() {
           <Route exact path='/' component={Projects}/>
           <Route path='/explore' component={Explore}/>
           <Route path='/doc-editor' component={DocEditor}/>
+          <Route path-="/notifications" component={NotificationsPage}/>
         </Switch>
         <Notifications className="side-info" />
         {/*<Col sm={3} className="side-info">
