@@ -13,7 +13,7 @@ function NotificationPage() {
     return (
         <div style={{display: 'flex', justifyContent: 'flex-start', flexGrow: '999'}}>
             <SideBar className="side-area"/>
-            <div id="notification" style={{flexGrow:999}}className="main-page">
+            <div id="notification" style={{flexGrow:4}}className="main-page">
                 <NotificationCard/>
                 <NotificationCard/>
                 <NotificationCard/>

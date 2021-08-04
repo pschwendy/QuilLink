@@ -24,12 +24,29 @@ function Projects() {
             <SideBar className="side-area" />
             <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
                 <div id="projects" className="main-page">
-                    <div id="project-list">
-                        <ProjectCard
-                        title="Novel 3"
-                        description="my review"
-                        />
-                    </div>
+                    <span className="p-toggler bolded">
+                        <div onClick={ToggleProjects} className="toggle" id="first-toggle">
+                            <div className = "" className={toggle === true ?  "toggled": ""}> <a> My Projects </a> </div> 
+                        </div>
+                        <div onClick={ToggleReviewing} className="toggle">
+                            <div className = "" className={toggle === true ?  "": "toggled"}> <a> Reviewing </a> </div>
+                        </div>
+                    </span>
+                    { toggle === true ? 
+                        <div id="project-list">
+                            <ProjectCard
+                            title='My Project'
+                            description='My Review'
+                            />
+                        </div>
+                        : 
+                        <div id="project-list">
+                            <ProjectCard
+                            title='My Review'
+                            description='My Review'
+                            />
+                        </div>
+                    }
                     {/*<div>
                         {/*<span className="p-toggler bolded">
                             <div onClick={ToggleProjects} className="toggle" id="first-toggle">

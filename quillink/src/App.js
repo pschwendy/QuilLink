@@ -14,11 +14,12 @@ import Notifications from './components/Notifications';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
 import './pages/css/main.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <div className="App">  
-      <div style={{position: "relative"}}>
+      <div className="container mx-auto">
         <Switch>
         <Route exact path='/' component={SignIn}/>
           <Route exact path='/projects' component={Projects}/>
