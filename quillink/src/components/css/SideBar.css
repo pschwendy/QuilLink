@@ -20,9 +20,9 @@
     display: flex;
     align-items: flex-end;
     position: relative;
-    flex-grow: 1;
-    flex-shrink: 0;
+    
     flex-direction: column;
+    width: 20vw !important;
 }
 
 @media only screen and (max-width: 768px) {
@@ -55,10 +55,13 @@
     border-radius: 9999;
 }
 
-a {
+.logo {
     text-align: left;
     padding-left: 10px;
     padding-bottom: 10px;
+}
+.questionable-stuff{
+    width: 20vw !important;
 }
 
 .disappear {

@@ -1,10 +1,17 @@
 .project-card {
     text-align: left;
     min-width: 100% !important;
-    width: max-content;
+    /*width: max-content;*/
     position: relative;
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 20vw !important;
+}
+
+.die {
+    word-wrap: break-word;
+    text-overflow: clip;
+    overflow: hidden;
 }
 
 .button-holder {

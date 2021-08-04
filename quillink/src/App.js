@@ -5,6 +5,7 @@ import Projects from './pages/Projects';
 import Explore from './pages/Explore';
 import DocEditor from './pages/DocEditer';
 import NotificationsPage from "./pages/NotificationPage"
+import SignIn from './pages/SignIn';
 
 import SideBar from './components/SideBar';
 import Notifications from './components/Notifications';
@@ -16,22 +17,15 @@ import './pages/css/main.css';
 
 function App() {
   return (
-    <div className="App">
-      
+    <div className="App">  
       <div style={{position: "relative"}}>
-      <div id="page">
-        <SideBar className="side-area"/>
         <Switch>
-          <Route exact path='/' component={Projects}/>
+        <Route exact path='/' component={SignIn}/>
+          <Route exact path='/projects' component={Projects}/>
           <Route path='/explore' component={Explore}/>
           <Route path='/doc-editor' component={DocEditor}/>
           <Route path-="/notifications" component={NotificationsPage}/>
         </Switch>
-        <Notifications className="side-info" />
-        {/*<Col sm={3} className="side-info">
-          <Notifications/>
-  </Col>*/}
-      </div>
       </div>
     </div>
   );

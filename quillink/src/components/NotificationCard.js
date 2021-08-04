@@ -1,28 +1,23 @@
-
+import {Card, Button} from "react-bootstrap";
+import {useState} from 'react';
+import "./css/NotificationCard.css";
 function NotificationCard(){
-
-    function hide(){
-        document.getElementById('id01').style.display='none';
-    }
 
     return(
 
-        <div>
-            <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
-            <div id="id01" class="w3-modal" style={{"display":"initial"}}>
-                <div class="w3-modal-content w3-blue">
-                    <div class="w3-container">
-                    <span onclick={hide}
-                    class="w3-button w3-display-topright">&times;</span>
-                    <h1><b>Uh Oh!</b></h1>
-                    <p>Some text in the Modal..</p>
+            <Card style={{"margin-top":"20px", "margin-right":"20vw"}}>
+                <Card.Body class="flex">
+                    <div class="half">
+                    <Card.Text>
+                    A condescending person left a review of your work.
+                    </Card.Text>
                     </div>
-                </div>
-            </div>
-        </div>
-
-
-
+                    <div class="half">
+                    <Button className="dismiss-button noti-button" variant="primary" size="sm">Dismiss</Button>
+                    <Button className="noti-button" variant="primary" size="sm">Open</Button>
+                    </div>
+                </Card.Body>
+            </Card>
 
     );
 

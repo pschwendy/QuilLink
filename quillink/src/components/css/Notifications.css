@@ -1,12 +1,13 @@
 #notif-bar {
-    flex-grow: 1;
+    /*flex-grow: 1;*/
     display: flex;
     justify-self: right;
     height: 100vh;
     padding-top: 20px;
     padding-bottom: 20px;
-    width: 350px;
-    max-width: 100%;
+    /*width: 385px;
+    max-width: 100%;*/
+    width: 20vw !important;
     position: relative;
 }
 

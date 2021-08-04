@@ -13,14 +13,14 @@ function SideBar() {
     }
     window.addEventListener('resize', editSideBar);
     return (
-        <div id="side-area" style={removeNames > 700 ? {'max-width':'100%'} : {'max-width':'68px'}}>
+        <div class="questionable-stuff" id="side-area" style={removeNames > 700 ? {'max-width':'100%'} : {'max-width':'68px'}}>
             <div id="inner-side" style={removeNames > 1200 ? {width:'275px'} : {width:'88px'}}>
                 <div id="side-bar">
                     <ListGroup className="options" variant="flush">
-                        <a action href='/'>
+                        <a className="logo" action href='/'>
                             <img style={removeNames > 1240 ? {width: '50px', height: '50px'} : {width: '30px', height: '30px'}} src={contract}/>
                         </a>
-                        <ListGroup.Item className="item" action href="/">
+                        <ListGroup.Item className="item" action href="/projects">
                             <div className="sidebar-icon">
                                 <FontAwesomeIcon icon={faPencilAlt} />
                             </div>

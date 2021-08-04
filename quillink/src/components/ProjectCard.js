@@ -7,9 +7,9 @@ function ProjectCard(props) {
         //<Button>HOLA</Button>
         <Card className="project-card" style={{width: '100%'}}>
             <Card.Img variant="top"/>
-            <Card.Body>
+            <Card.Body className="die">
                 <Card.Title>{props.title}</Card.Title>
-                <Card.Text>
+                <Card.Text style={{wordBreak: 'wrap'}}>
                 {props.description}
                 </Card.Text>
                 <div className="button-holder">

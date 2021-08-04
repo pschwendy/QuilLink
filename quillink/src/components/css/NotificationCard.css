@@ -1,0 +1,24 @@
+.flex{
+    display: flex;
+}
+
+.noti-button{
+    float: right !important;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.half{
+    flex-grow: 0.5;
+    text-align: left !important;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.dismiss-button{
+    background-color: #d62246 !important;
+    border-color: #d62246 !important;
+}
