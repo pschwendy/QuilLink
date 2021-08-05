@@ -15,6 +15,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
 import './pages/css/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect } from 'react';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
         <Route exact path='/' component={SignIn}/>
           <Route exact path='/projects' component={Projects}/>
           <Route path='/explore' component={Explore}/>
-          <Route path='/doc-editor' component={DocEditor}/>
+          <Route path='/:document/doc-editor' component={DocEditor}/>
           <Route path-="/notifications" component={NotificationsPage}/>
         </Switch>
       </div>
