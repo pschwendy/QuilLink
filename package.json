@@ -4,7 +4,12 @@
   "description": "The writer's sharing app YO WASSUP HOMIE, the sqrt of 100 is 10",
   "main": "server.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "formidable": "^1.2.2",
+    "google-auth-library": "^7.5.0",
+    "pg": "^8.7.1",
     "react-bootstrap": "^1.6.1",
     "react-router-dom": "^5.2.0"
   },
