@@ -24,9 +24,16 @@
     display: inline-block; 
     padding: 20px 0 10px 0;
     user-select: none;
+    
 }
 
 .toggle:hover {
     cursor: pointer;
-   
+    color: blue;
+    border-bottom: 1px solid darkblue !important;
+    transition: border-bottom 2s;
 } 
+
+.toggled {
+    border-bottom: 1px solid darkblue !important; 
+}

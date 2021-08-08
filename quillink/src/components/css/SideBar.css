@@ -67,3 +67,7 @@
 .disappear {
     display: none;
 }
+
+.active- {
+    background-color: #454ADE;
+}

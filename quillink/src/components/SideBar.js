@@ -22,7 +22,7 @@ function SideBar(props) {
                         <a className="logo" action href='/'>
                             <img style={removeNames < 800 || collapsed ?  {width: '30px', height: '30px'} :  {width: '50px', height: '50px'}} src={contract}/>
                         </a>
-                        <ListGroup.Item className="item" action href="/projects">
+                        <ListGroup.Item className={props.page === 0 ? "active item" : "item"} action href="/projects">
                             <div className="sidebar-icon">
                                 <FontAwesomeIcon icon={faPencilAlt} />
                             </div>
@@ -30,15 +30,15 @@ function SideBar(props) {
                                 Projects
                             </div>
                         </ListGroup.Item>
-                        <ListGroup.Item className="item" action href="/explore">
+                        <ListGroup.Item className={props.page === 1 ? "active item" : "item"} action href="/explore">
                             <div className="sidebar-icon"><FontAwesomeIcon icon={faSearch} /></div>
                             <div className={removeNames < 800 || collapsed ? "sidebar-name disappear" : "sidebar-name"}>Explore</div> 
                         </ListGroup.Item>
-                        <ListGroup.Item className="item" action href="/trending">
+                        <ListGroup.Item className={props.page === 2 ? "active item" : "item"} action href="/trending">
                             <div className="sidebar-icon"><FontAwesomeIcon icon={faArrowUp}/></div>
                             <div className={removeNames < 800 || collapsed ? "sidebar-name disappear" : "sidebar-name"}>Trending</div>
                         </ListGroup.Item>
-                        <ListGroup.Item className="item" action href="/notifications">
+                        <ListGroup.Item className={props.page === 3 ? "active item" : "item"} action href="/notifications">
                             <div className="sidebar-icon"><FontAwesomeIcon icon={faBell}/></div>
                             <div className={removeNames < 800 || collapsed ? "sidebar-name disappear" : "sidebar-name"}>Notifications</div>
                         </ListGroup.Item>

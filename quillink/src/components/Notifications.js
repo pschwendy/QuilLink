@@ -16,11 +16,11 @@ function Notifications() {
             <div id="inner-notif">
                 <Card id="notification-center">
                     <span className="notif-toggler bolded">
-                        <div onClick={ToggleProjects} className="toggle" id="first-toggle">
-                            <div className={toggle === true ?  "toggled": ""}> My Projects</div> 
+                        <div onClick={ToggleProjects} className={toggle === true ?  "toggled toggle": "toggle"} id="first-toggle">
+                            <div className = ""> <a> My Projects </a> </div> 
                         </div>
-                        <div onClick={ToggleReviewing} className="toggle">
-                            <div className={toggle === true ?  "": "toggled"}> Reviewing</div>
+                        <div onClick={ToggleReviewing} className={toggle === true ?  "toggle": "toggled toggle"}>
+                            <div className = "" > <a> Reviewing </a> </div>
                         </div>
                     </span>
                     <div id="project-list">

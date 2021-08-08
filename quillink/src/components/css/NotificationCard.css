@@ -1,3 +1,5 @@
+
+
 .flex{
     display: flex;
 }
@@ -7,6 +9,8 @@
     margin-right: 10px;
     margin-bottom: 5px;
     margin-top: 5px;
+    width: 100%;
+    max-width: 100px;
 }
 
 .half{
@@ -21,4 +25,6 @@
 .dismiss-button{
     background-color: #d62246 !important;
     border-color: #d62246 !important;
+    width: 100%;
+    max-width: 100px;
 }

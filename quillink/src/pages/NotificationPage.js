@@ -11,14 +11,22 @@ import "./css/NotificationPage.css"
 
 function NotificationPage() {
     return (
-        <div style={{display: 'flex', justifyContent: 'flex-start', flexGrow: '999'}}>
-            <SideBar className="side-area"/>
-            <div id="notification" style={{flexGrow:4}}className="main-page">
-                <NotificationCard/>
-                <NotificationCard/>
-                <NotificationCard/>
+        <div id="page">
+            <div style={{display: 'flex', justifyContent: 'flex-start', flexGrow: '999'}}>
+                <SideBar 
+                    className="side-area"
+                    page={2}
+                />
+                <div id="notification" style={{flexGrow:4}}className="main-page">
+                    <NotificationCard 
+                        text = "Aarnav is cooler than petonyAarnav is cooler than petonyAarnav is cooler than petonyAarnav is cooler than petonyAarnav is cooler than petonyAarnav is cooler than petony" 
+                        className = "carddd"/>
+                    <NotificationCard 
+                        text =" Peter is the coolest." 
+                        className = "carddd"/>
+                    <NotificationCard text = "Tony is adequete" className = "carddd"/>
+                </div>
             </div>
-
         </div>
     );
 }

@@ -21,15 +21,17 @@ function Projects() {
 
     return (
         <div id="page">
-            <SideBar className="side-area" />
+            <SideBar 
+                className="side-area"
+                page={0} />
             <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
                 <div id="projects" className="main-page">
                     <span className="p-toggler bolded">
-                        <div onClick={ToggleProjects} className="toggle" id="first-toggle">
-                            <div className = "" className={toggle === true ?  "toggled": ""}> <a> My Projects </a> </div> 
+                        <div onClick={ToggleProjects} className={toggle === true ?  "toggled toggle": "toggle"} id="first-toggle">
+                            <div className = ""> <a> My Projects </a> </div> 
                         </div>
-                        <div onClick={ToggleReviewing} className="toggle">
-                            <div className = "" className={toggle === true ?  "": "toggled"}> <a> Reviewing </a> </div>
+                        <div onClick={ToggleReviewing} className={toggle === true ?  "toggle": "toggled toggle"}>
+                            <div className = "" > <a> Reviewing </a> </div>
                         </div>
                     </span>
                     { toggle === true ? 

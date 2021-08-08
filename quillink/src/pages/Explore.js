@@ -10,7 +10,10 @@ import SideBar from '../components/SideBar';
 function Explore() {
     return (
         <div id="page">
-            <SideBar className="side-area"/>
+            <SideBar 
+                className="side-area"
+                page={1}
+            />
             <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
                 <div id="projects" className="main-page">
                     <ShareCard
