@@ -3,8 +3,8 @@ import "./css/SignIn.css";
 import { GoogleLogin } from 'react-google-login';
 import { useEffect, Component } from "react";
 
-/*
-function onSignIn(googleUser) {
+
+/*function onSignIn(googleUser) {
     console.log("HI")
     var token = googleUser.getAuthResponse().id_token;
     var xhr = new XMLHttpRequest();
@@ -17,8 +17,8 @@ function onSignIn(googleUser) {
       }
     };
     xhr.send();
-}
-*/
+}*/
+
 /*componentDidMount() {
     gapi.signin2.render('g-signin2', {
       'scope': 'https://www.googleapis.com/auth/plus.login',
@@ -73,11 +73,28 @@ function onSignIn(googleUser) {
         }
       
     }
+
   
     onSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
       console.log("Name: " + profile.getName());
-      console.log("HIIIIIIII");
+      console.log("HI");
+      var token = googleUser.getAuthResponse().id_token;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/tokensignin/' + token);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+          console.log("XHR: " + xhr.response);
+          if (xhr.response === "success"){
+            window.location.reload();
+          }
+          else if (xhr.response === "clear"){
+              console.log("HIII")
+              window.location.replace("/projects");
+              console.log(window.location);
+          }
+      };
+      xhr.send();
     }
   
     render() {
