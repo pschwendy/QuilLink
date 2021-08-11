@@ -1,3 +1,5 @@
+CREATE USER quillink WITH PASSWORD 'quillink';
+
 CREATE TABLE users(pk serial PRIMARY KEY,
 email VARCHAR(50) UNIQUE NOT NULL,
 password VARCHAR(50) NOT NULL,
@@ -12,9 +14,8 @@ CREATE TABLE projects(pk serial PRIMARY KEY,
 owner INTEGER NOT NULL,
 title VARCHAR(50) NOT NULL
 description VARCHAR(200),
-edit_link VARCHAR(100),
+edit_link jsonb,
 tags jsonb NOT NULL,
 last_updated TIMESTAMP,
 likes INTEGER NOT NULL,
-views INTEGER NOT NULL,
-);
+views INTEGER NOT NULL);
