@@ -38,7 +38,7 @@ function Projects() {
                         <div id="project-list">
                             <ProjectCard
                             title='My Project'
-                            description='My Review'
+                            description='My Rview'
                             />
                         </div>
                         : 
