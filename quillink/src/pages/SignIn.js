@@ -35,7 +35,7 @@ import { useEffect, Component } from "react";
     componentDidMount() {
         const element = document.getElementById('grandScript');
         const otroElement = document.getElementById("grandMeta");
-        if (element && otroElement){
+        if (element && otroElement) {
             console.log(element);
             console.log(otroElement);
             try{
@@ -45,12 +45,12 @@ import { useEffect, Component } from "react";
                     onsuccess: this.onSuccess
                 });
             }
-            catch(e){
+            catch(e) {
+                console.log(e);
                 window.location.reload();
             }
-            
         }
-        else{
+        else {
             this.observer = new MutationObserver(() => {
                 const divElement = document.getElementById('grandScript');
                 const otroElement = document.getElementById('grandMeta')
@@ -64,14 +64,13 @@ import { useEffect, Component } from "react";
                         });
                    }
                    catch(e){
-                        window.location.reload();
+                        //window.location.reload();
                    }
                    
                 }
             });
             this.observer.observe(document, {subtree: true, childList: true});
         }
-      
     }
 
   
@@ -86,12 +85,12 @@ import { useEffect, Component } from "react";
       xhr.onload = function() {
           console.log("XHR: " + xhr.response);
           if (xhr.response === "success"){
-            window.location.reload();
-          }
-          else if (xhr.response === "clear"){
               console.log("HIII")
               window.location.replace("/projects");
               console.log(window.location);
+          }
+          else{
+              window.location.reload();
           }
       };
       xhr.send();

@@ -1,21 +1,21 @@
-CREATE USER quillink WITH PASSWORD 'quillink';
+CREATE USER quillink WITH PASSWORD 'supersecretpassword';
 
 CREATE TABLE users(pk serial PRIMARY KEY,
 email VARCHAR(50) UNIQUE NOT NULL,
-password VARCHAR(50) NOT NULL,
+username VARCHAR(50) UNIQUE NOT NULL,
+password VARCHAR(70) NOT NULL,
 name VARCHAR(70) NOT NULL,
-bio VARCHAR(100),
-last_login TIMESTAMP,
-profile_pic VARCHAR(70));
+info jsonb,
+last_login TIMESTAMP);
 
 CREATE TABLE follows(follower INTEGER NOT NULL, following INTEGER NOT NULL);
 
 CREATE TABLE projects(pk serial PRIMARY KEY,
 owner INTEGER NOT NULL,
-title VARCHAR(50) NOT NULL
+title VARCHAR(50) NOT NULL,
 description VARCHAR(200),
 edit_link jsonb,
-tags jsonb NOT NULL,
+data jsonb NOT NULL,
 last_updated TIMESTAMP,
 likes INTEGER NOT NULL,
 views INTEGER NOT NULL);

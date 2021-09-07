@@ -5,7 +5,7 @@ import Projects from './pages/Projects';
 import Explore from './pages/Explore';
 import DocEditor from './pages/DocEditer';
 import NotificationsPage from "./pages/NotificationPage"
-import SignIn from './pages/SignIn';
+import SignIn from './pages/SignInP2';
 
 import SideBar from './components/SideBar';
 import Notifications from './components/Notifications';
