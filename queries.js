@@ -1,14 +1,88 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 const bcrypt = require("bcryptjs");
-// await client.connect()
+// await pool.connect()
 
-class Queries {
+class queries {
     // Constructor
-    // Connects client to DB
-    super() {
-        const client = new Client();
-        await client.connect();
+    // Connects pool to DB
+    constructor() {
+        this.pool = new Pool({
+            user: 'quillink',
+            database: 'quillink_db',
+            password: 'supersecretpassword',
+            port: 5432,
+        });
+        this.pool.connect();
     }
+
+    // Queries.signin()
+    // Checks if database query @ username exists, if not, signs up w/ given parameters
+    // Input: username -> username used for finding user in database
+    // Input: password -> checks if found user has this password
+    signup(email, password, name, callback) {
+        console.log("------------in here aslkjdsakldjslkdjsld");
+        const select = {
+            text: "SELECT password FROM users WHERE email=$1",
+            values: [email]
+        };
+
+        this.pool.query(select, (err, rows) => {
+            console.log(rows.length);
+            if(err) {
+                throw err;
+            } else if (rows.length == 0) {
+                const query = {
+                    text: "INSERT INTO users(email, username password, name) VALUES (email=$1, username=$1, password=$2, name=$3)",
+                    values: [email, password, name]
+                }
+
+                this.pool.query(query, (err) => {
+                    if(err) {
+                        throw(err);
+                    }
+                    return callback(true);
+                });
+            } else {
+                return callback(false);
+            }
+        });
+    } // signup()
+
+    async async_signup(email, password, name, success) {
+        console.log("quering...");
+        console.log("email: " + email);
+            console.log("name: " + name);
+        const select = {
+            text: "SELECT password FROM users WHERE email=$1",
+            values: [email]
+        };
+
+        this.pool
+        .query(select)
+        .then(rows => {
+            console.log(rows.rowCount);
+            if (rows.rowCount == 0) {
+                const query = {
+                    text: "INSERT INTO users(email, username, password, name) VALUES ($1, $1, $2, $3)",
+                    values: [email, password, name]
+                }
+
+                this.pool.query(query, (err) => {
+                    if(err) {
+                        throw(err);
+                    }
+                    return success(true);
+                });
+            } else {
+                console.log("Calling signin");
+                this.async_signin(email, password, (result) => {
+                    return success(result);
+                })
+                
+            }
+        })
+        .catch(e => { throw e })
+    } // signup()
 
     // Queries.signin()
     // Checks if database query @ username exists, if not, signs up w/ given parameters
@@ -20,16 +94,16 @@ class Queries {
             values: [email]
         };
 
-        this.client.query(select, (err, rows) => {
+        this.pool.query(select, (err, rows) => {
             if(err) {
                 throw err;
             } else if (!rows) {
                 const query = {
-                    text: "INSERT INTO users(email, password, name) VALUES (email=$1, password=$2, name=$3)",
+                    text: "INSERT INTO users(email, username password, name) VALUES (email=$1, username=$1, password=$2, name=$3)",
                     values: [email, password, name]
                 }
 
-                this.client.query(query, (err) => {
+                this.pool.query(query, (err) => {
                     if(err) {
                         throw(err);
                     }
@@ -51,7 +125,7 @@ class Queries {
             values: [email]
         };
 
-        this.client.query(query, (err, rows) => {
+        this.pool.query(query, (err, rows) => {
             if(err) {
                 throw(err);
             } 
@@ -73,6 +147,38 @@ class Queries {
         });
     } // signin()
 
+    // Queries.signin()
+    // Checks if database query @ username has password = input password
+    // Input: username -> username used for finding user in database
+    // Input: password -> checks if found user has this password
+    async async_signin(email, password, success) {
+        const query = {
+            text: "SELECT password FROM users WHERE email=$1",
+            values: [email]
+        };
+
+        this.pool.query(query)
+        .then(rows => {
+            console.log(rows.rows[0]);
+            if (rows.rowCount == 0) {
+                return success(false);
+            } 
+            else if (rows.rows[0].password == password) {               
+                return success(true);
+            }
+
+            // Signs in if password is correct
+            /*bcrypt.compare(password, rows.password, (bcryptErr, result) => {
+                if(bcryptErr) {
+                    throw(bcryptErr);
+                } else if(result == true) {
+                    return callback(rows);
+                }
+            });*/
+        })
+        .catch(e => { throw e });
+    } // async_signin()
+
     // Queries.getUser()
     // Checks if database query @ username has password = input password
     // Input: username -> username used for finding user in database
@@ -83,7 +189,7 @@ class Queries {
             values: [email]
         };
 
-        this.client.query(query, (err, rows) => {
+        this.pool.query(query, (err, rows) => {
             if(err) {
                 throw(err);
             }
@@ -98,7 +204,7 @@ class Queries {
             values: [userpk]
         }
 
-        this.client.query(query, (err, rows) => {
+        this.pool.query(query, (err, rows) => {
             if(err) {
                 throw(err);
             }
@@ -122,7 +228,7 @@ class Queries {
             }
         }
 
-        this.client.query(query, (err, rows) => {
+        this.pool.query(query, (err, rows) => {
             if(err) {
                 throw(err);
             }
@@ -148,7 +254,7 @@ class Queries {
 
         query.text += " ORDER BY last_updated DESC, likes DESC, views DESC";
 
-        this.client.query(query, (err, rows) => {
+        this.pool.query(query, (err, rows) => {
             if(err) {
                 throw(err);
             }
@@ -160,7 +266,7 @@ class Queries {
     getTrending(callback) {
         const query = "SELECT * FROM projects ORDER BY last_updated DESC, likes DESC, views DESC";
 
-        this.client.query(query, (err, rows) => {
+        this.pool.query(query, (err, rows) => {
             if(err) {
                 throw(err);
             }
@@ -169,4 +275,4 @@ class Queries {
     } // getProjectsFromTags()
 }
 
-module.exports = Queries;
+module.exports = queries;
