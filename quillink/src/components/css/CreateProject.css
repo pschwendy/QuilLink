@@ -1,0 +1,50 @@
+#the-button {
+    border-radius: 100%;
+    position: absolute;
+    margin-right: 10px;
+    left: 75%;
+    top: 94%;
+    width: 60px;
+    height: 60px;
+    transform: translate(-75%, -94%);
+    display: inline-block;
+    z-index: 99999;
+}
+
+#create-icon {
+    vertical-align: middle;
+}
+
+.group {
+    display: inline-flex;
+    min-width: 100%;
+    gap: 12px;
+}
+
+.project-input {
+    padding: 10px 10px;
+    width: 100%;
+    border: 1px solid #DFDFDF;
+}
+
+#button-group {
+    margin-top: 20px;
+    display: inline-flex;
+    gap: 12px;
+    float: right;
+}
+
+.project-input-group {
+    display: block;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 1.2em;
+}
+
+#create-header {
+    display: inline-block; 
+    padding: 20px 0 0 0;
+    user-select: none;
+    text-align: left;
+    border-bottom: 1px solid gray;
+}

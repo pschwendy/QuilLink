@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import ProjectCard from '../components/ProjectCard';
 import './css/Projects.css';
 import './css/main.css';
 import Notifications from '../components/Notifications';
 import SideBar from '../components/SideBar';
 import ShareCard from '../components/ShareCard';
+import CreateProjectButton from '../components/CreateProject';
+import '../components/css/CreateProject.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 function Projects() {
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
 
     const [toggle, SetToggle] = useState(true);
     const ToggleProjects = () => {
@@ -19,64 +24,107 @@ function Projects() {
         SetToggle(false);
     };
 
+    const [create, SetCreate] = useState(false);
+    const ToggleCreateProject = () => {
+        SetCreate(true);
+        console.log("ready to create project");
+    };
+
     return (
         <div id="page">
             <SideBar 
                 className="side-area"
                 page={0} />
-            <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
-                <div id="projects" className="main-page">
-                    <span className="p-toggler bolded">
-                        <div onClick={ToggleProjects} className={toggle === true ?  "toggled toggle": "toggle"} id="first-toggle">
-                            <div className = ""> <a> My Projects </a> </div> 
-                        </div>
-                        <div onClick={ToggleReviewing} className={toggle === true ?  "toggle": "toggled toggle"}>
-                            <div className = "" > <a> Reviewing </a> </div>
-                        </div>
-                    </span>
-                    { toggle === true ? 
-                        <div id="project-list">
-                            <ProjectCard
-                            title='My Project'
-                            description='My Review'
-                            />
-                        </div>
-                        : 
-                        <div id="project-list">
-                            <ProjectCard
-                            title='My Review'
-                            description='My Review'
-                            />
-                        </div>
-                    }
-                    {/*<div>
-                        {/*<span className="p-toggler bolded">
-                            <div onClick={ToggleProjects} className="toggle" id="first-toggle">
-                                <div className = "" className={toggle === true ?  "toggled": ""}> <a> My Projects </a> </div> 
+
+            <Button style={create === true ? {display: "none"} : {}} id="the-button" onClick={ToggleCreateProject}>
+                <FontAwesomeIcon id="create-icon" icon={faPlus} size='2x' />
+            </Button>
+           
+                <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
+                    <div id="projects" className="main-page">
+                        { create === false ?
+                            <div>
+                                <span className="p-toggler bolded">
+                                    <div onClick={ToggleProjects} className={toggle === true ?  "toggled toggle": "toggle"} id="first-toggle">
+                                        <div className = ""> <a> My Projects </a> </div> 
+                                    </div>
+                                    <div onClick={ToggleReviewing} className={toggle === true ?  "toggle": "toggled toggle"}>
+                                        <div className = "" > <a> Reviewing </a> </div>
+                                    </div>
+                                </span>
+                                { toggle === true ? 
+                                    <div id="project-list">
+                                        <ProjectCard
+                                        title='My Project'
+                                        description='My Review'
+                                        />
+                                    </div>
+                                    : 
+                                    <div id="project-list">
+                                        <ProjectCard
+                                        title='My Review'
+                                        description='My Review'
+                                        />
+                                    </div>
+                                }
                             </div>
-                            <div onClick={ToggleReviewing} className="toggle">
-                                <div className = "" className={toggle === true ?  "": "toggled"}> <a> Reviewing </a> </div>
+                            :
+                            <div>
+                                <span id="create-header" className="p-toggler bolded">
+                                    Create Project
+                                </span>
+                                <div className="project-input-group">
+                                    <div>Title</div>
+                                    <input className="project-input" type='text'/>
+                                </div>
+                                <div className="project-input-group">
+                                    <div>Tags</div>
+                                    <div className="group">
+                                        <input className="project-input" type='text'/>
+                                        <Button>Add</Button>
+                                    </div>
+                                </div>
+                                <div className="project-input-group">
+                                    <div>Description</div>
+                                    <div className="group">
+                                        <input className="project-input" type='textarea' rows="4" cols="50"/>
+                                    </div>
+                                </div>
+                                <div id="button-group">
+                                    <Button className="float-right">Create Project</Button>
+                                    <Button className="float-right">Exit</Button>
+                                </div>
                             </div>
-                        </span>}
-                        
-                        { toggle === true ? 
-                        <div id="project-list">
-                            <ShareCard
-                            title='My Project'
-                            description='My Review'
-                            />
-                        </div>
-                        : 
-                        <div id="project-list">
-                            <ShareCard
-                            title='My Review'
-                            description='My Review'
-                            />
-                        </div>
-                        }
-                    </div>*/}
+                        }  
+                        {/*<div>
+                            {/*<span className="p-toggler bolded">
+                                <div onClick={ToggleProjects} className="toggle" id="first-toggle">
+                                    <div className = "" className={toggle === true ?  "toggled": ""}> <a> My Projects </a> </div> 
+                                </div>
+                                <div onClick={ToggleReviewing} className="toggle">
+                                    <div className = "" className={toggle === true ?  "": "toggled"}> <a> Reviewing </a> </div>
+                                </div>
+                            </span>}
+                            
+                            { toggle === true ? 
+                            <div id="project-list">
+                                <ShareCard
+                                title='My Project'
+                                description='My Review'
+                                />
+                            </div>
+                            : 
+                            <div id="project-list">
+                                <ShareCard
+                                title='My Review'
+                                description='My Review'
+                                />
+                            </div>
+                            }
+                        </div>*/}
+                    </div>
                 </div>
-            </div>
+            
             <Notifications style={{flexGrow: '2'}} className="side-info" />
         </div>
         

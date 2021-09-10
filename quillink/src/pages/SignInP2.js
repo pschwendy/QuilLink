@@ -12,29 +12,22 @@ function GoogleSignIn() {
         console.log("HI");
         var token = googleUser.getAuthResponse().id_token;
         fetch('/tokensignin/' + token)
-            .then(res => { 
-                if(res) {
-                    window.location.replace("/projects");
-                } else {
-                    console.log("fail");
-                }
-            });
-      /*var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/tokensignin/' + token);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onload = function() {
-          console.log("XHR: " + xhr.response);
-          if (xhr.response === "success"){
-              console.log("HIII")
-              window.location.replace("/projects");
-              console.log(window.location);
-          }
-          else{
-              window.location.reload();
-          }
-      };
-      xhr.send();*/
+        .then(res => { 
+            if(res) {
+                window.location.replace("/projects");
+            } else {
+                console.log("fail");
+            }
+        });
     }
+    var signedIn = false;
+    fetch('/checkvalidity').then(res => { 
+        if(res) {
+            signedIn = true;
+        } else {
+            signedIn = false;
+        }
+    });
 
     return (
         <div>
@@ -44,7 +37,7 @@ function GoogleSignIn() {
                 onSuccess={onSuccess}
                 onFailure={console.log("problem")}
                 cookiePolicy={'single_host_origin'}
-                isSignedIn={true}
+                isSignedIn={signedIn}
             />
         </div>
     );
