@@ -17,14 +17,14 @@ function GoogleSignIn() {
         var access_token = googleUser.getAuthResponse().access_token;
         //console.log(googleUser.getAuthResponse());
         fetch('/tokensignin/' + token + '/' + access_token)
-        /*.then(res => { 
+        .then(res => { 
             if(res) {
                 window.location.replace("/projects");
                 console.log(res);
             } else {
                 console.log("fail");
             }
-        });*/
+        });
     }
     var signedIn = false;
     fetch('/checkvalidity').then(res => { 
