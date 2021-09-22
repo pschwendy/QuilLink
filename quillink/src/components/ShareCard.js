@@ -16,7 +16,7 @@ function ShareCard(props) {
                 {props.description}
                 </Card.Text>
                 <div className="button-holder">
-                    <Button className="go-to" variant="primary">Go to Project</Button>
+                    <a href="/lsadsd/view"><Button className="go-to" variant="primary">Go to Project</Button></a>
                 </div>
             </Card.Body>
         </Card>

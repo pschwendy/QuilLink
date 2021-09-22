@@ -8,6 +8,11 @@ var cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
 
+const fs = require('fs');
+const readline = require('readline');
+const {google} = require('googleapis');
+
+
 const Queries = require('./queries.js');
 
 const querier = new Queries();
@@ -21,12 +26,6 @@ var studentData = [{
 }]
 
 
-
-app.get('/api/getDocument', (req, res) => {
-    var link = "https://docs.google.com/document/d/12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g/edit?usp=sharing";
-    res.json(link);
-    console.log('Sent link to document');
-});
 
 app.get('/api/login', (req, res) => {
     var form = new formidable.IncomingForm();
@@ -49,8 +48,25 @@ app.get('/api/login', (req, res) => {
 
 
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client("938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleusercontent.com");
+//secret: 1W9hiCWmQkdq7dcJsKsP08Z3
+var refresh_token = process.env.refresh_token;
+const client = new OAuth2Client("938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleusercontent.com", "1W9hiCWmQkdq7dcJsKsP08Z3");
+const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 
+app.get('/api/getDocument', (req, res) => {
+    var link = "https://docs.google.com/document/d/12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g/edit?usp=sharing";
+    res.json(link);
+
+    console.log('Sent link to document');
+    const docs = google.docs({version: 'v1', auth: client});
+    docs.documents.get({
+        documentId: '12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g',
+    }, (err, result) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        console.log(`The title of the document is: ${result.data.title}`);
+    });
+    console.log("help");
+});
 
 function createSessionKey(){
   var key = "";
@@ -60,20 +76,37 @@ function createSessionKey(){
   return key;
 }
 
-app.get("/tokensignin/:token", function(req, res, next){
-    //res.clearCookie("email", {path:'/'});
-    //res.clearCookie("sessionKey", {path:'/'});
-    console.log(req.cookies.email);
+/*app.get("/checkvalidity", (req, res, next) => {
     if (req.cookies.email){
         res.send(true);
         console.log("FINISHED");
         res.end();
-        return;
+    } else {
+        console.log("Sending false");
+        res.send(false);
+        res.end();
     }
+});*/
+
+app.get("/tokensignin/:token/:a_token", function(req, res, next){
+    console.log("hi")
+    console.log("gtoken:" + req.params.token);
+    res.clearCookie("email", {path:'/'});
+    res.clearCookie("sessionKey", {path:'/'});
+    console.log(req.cookies.email);
+    /*if (req.cookies.email){
+        res.send(true);
+        console.log("FINISHED");
+        res.end();
+        return;
+    }*/
     var gtoken = req.params.token;
+    var access_token = req.params.a_token;
+    console.log("gtoken:" + gtoken);
 
     //handle forms in these thingies
     async function verify() {
+        console.log("async gtoken:" + gtoken);
         res.clearCookie("email");
         res.clearCookie("sessionKey");
         console.log("---------here----------");
@@ -83,6 +116,18 @@ app.get("/tokensignin/:token", function(req, res, next){
             // Or, if multiple clients access the backend:
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
+        
+        client.setCredentials({
+            access_token: access_token
+        });
+        const docs = google.docs({version: 'v1', auth: client});
+        docs.documents.get({
+            documentId: '12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g',
+        }, (err, result) => {
+            if (err) return console.log('The API returned an error: ' + err);
+            console.log(`The title of the document is: ${result.data.title}`);
+        });
+    
         console.log("---------here1----------");
         const payload = ticket.getPayload();
         var givenEmail = payload.email;
@@ -129,7 +174,7 @@ app.get("/tokensignin/:token", function(req, res, next){
                     res.cookie("email", givenEmail);
                     res.cookie("key", sessionkey);
                     console.log("IT WORKS GUYS");
-                    
+                    //res.redirect(authUrl);
                     res.send(true);
                 } else {
                     console.log("RIP");
@@ -178,6 +223,10 @@ app.get("/tokensignin/:token", function(req, res, next){
     }*/
 });
 
+app.get("/create-project", (req, res, next) => {
+    //querier.create
+});
+
 /*function loggedIn(req){
     //CHANGE WHEN READY
     var passed = false;
@@ -210,7 +259,39 @@ function checkValidity(req, res, next){
 
 //app.use(checkValidity);
 
-app.get('*', (req, res, next) =>{
+function loggedIn(req) {
+    // CHANGE WHEN READY
+    console.log("MAIL: " + req.cookies.email);
+    for (student of studentData){
+      if (student.email == req.cookies.email){ //&& student.sessionkey == req.cookies.key){
+        return true;
+      }
+    }
+  
+    return false;
+}
+
+/*function checkValidity(req, res, next){
+    console.log("checking validity");
+    if (loggedIn(req)) {
+        console.log(req.url);
+        if (req.url == "/tokenDone"){
+            res.send("clear");
+        }
+        else{
+            next();
+        }
+      
+    }
+    else {
+        console.log("REDIRECTING");
+        res.redirect("/");
+    }
+}*/
+
+//app.use(checkValidity);
+
+app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname + '/quillink/build/index.html'));
 });
 

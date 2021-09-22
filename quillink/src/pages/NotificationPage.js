@@ -15,7 +15,7 @@ function NotificationPage() {
             <div style={{display: 'flex', justifyContent: 'flex-start', flexGrow: '999'}}>
                 <SideBar 
                     className="side-area"
-                    page={2}
+                    page={3}
                 />
                 <div id="notification" style={{flexGrow:4}}className="main-page">
                     <NotificationCard 

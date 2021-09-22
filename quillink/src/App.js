@@ -6,7 +6,7 @@ import Explore from './pages/Explore';
 import DocEditor from './pages/DocEditer';
 import NotificationsPage from "./pages/NotificationPage"
 import SignIn from './pages/SignInP2';
-
+import DocViewer from './pages/DovViewer';
 import SideBar from './components/SideBar';
 import Notifications from './components/Notifications';
 
@@ -17,6 +17,7 @@ import './pages/css/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect } from 'react';
 
+
 function App() {
   return (
     <div className="App">  
@@ -25,7 +26,8 @@ function App() {
         <Route exact path='/' component={SignIn}/>
           <Route exact path='/projects' component={Projects}/>
           <Route path='/explore' component={Explore}/>
-          <Route path='/:document/doc-editor' component={DocEditor}/>
+          <Route path='/:document/edit' component={DocEditor}/>
+          <Route path='/:document/view' component={DocViewer}/>
           <Route path-="/notifications" component={NotificationsPage}/>
         </Switch>
       </div>

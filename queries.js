@@ -273,6 +273,19 @@ class queries {
             return callback(rows);
         });
     } // getProjectsFromTags()
+
+    createProject(owner, title, description, editLink, date) {
+        const insert = {
+            text: "INSERT INTO projects (owner, title, description, edit_link, last_updated, views, likes) VALUES ($1, $2, $3, $4, $5, 0, 0) ",
+            values: [owner, title, description, editLink, date.getTime()]
+        };
+
+        this.pool.query(query, (err) => {
+            if(err) {
+                throw(err);
+            }
+        });
+    }
 }
 
 module.exports = queries;
