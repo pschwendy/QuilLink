@@ -49,7 +49,6 @@ app.get('/api/login', (req, res) => {
 
 const {OAuth2Client} = require('google-auth-library');
 //secret: 1W9hiCWmQkdq7dcJsKsP08Z3
-var refresh_token = process.env.refresh_token;
 const client = new OAuth2Client("938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleusercontent.com", "1W9hiCWmQkdq7dcJsKsP08Z3");
 const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 
@@ -65,7 +64,18 @@ app.get('/api/getDocument', (req, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         console.log(`The title of the document is: ${result.data.title}`);
     });
-    console.log("help");
+});
+
+app.get('/api/viewDocument', (req, res) => {
+    const docs = google.docs({version: 'v1', auth: client});
+    docs.documents.get({
+        documentId: '13Vs6lMQV75y-lphx7AnKoFMOJ4qfb2Z4r36az74B8kw',
+    }, (err, result) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        console.log(`The title of the document is: ${result.data.title}`);
+        console.log(result.data);
+        res.json(result.data.body.content);
+    });
 });
 
 function createSessionKey(){
