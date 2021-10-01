@@ -12,6 +12,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Projects() {
+    fetch('/api/checkvalidity')
+    .then(res => res.json())
+    .then(ready => { 
+        if(!ready) {
+            console.log("POOP");
+            window.location.replace("/");
+        }
+    });
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);

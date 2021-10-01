@@ -16,6 +16,8 @@ import { Route, Switch } from 'react-router-dom';
 import './pages/css/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect } from 'react';
+import SignUp from './pages/SignUp';
+import Trending from './pages/Trending';
 
 
 function App() {
@@ -23,12 +25,14 @@ function App() {
     <div className="App">  
       <div className="container mx-auto">
         <Switch>
-        <Route exact path='/' component={SignIn}/>
+          <Route exact path='/' component={SignIn}/>
+          <Route path="/sign-up" component={SignUp}/>
           <Route exact path='/projects' component={Projects}/>
           <Route path='/explore' component={Explore}/>
           <Route path='/:document/edit' component={DocEditor}/>
           <Route path='/:document/view' component={DocViewer}/>
-          <Route path-="/notifications" component={NotificationsPage}/>
+          <Route path="/trending" component={Trending}/>
+          <Route path="/notifications" component={NotificationsPage}/>
         </Switch>
       </div>
     </div>

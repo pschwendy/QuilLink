@@ -86,30 +86,30 @@ function createSessionKey(){
   return key;
 }
 
-/*app.get("/checkvalidity", (req, res, next) => {
-    if (req.cookies.email){
-        res.send(true);
+app.get("/api/checkvalidity", (req, res, next) => {
+    console.log("IN API/CHECKVALIDITY")
+
+    if (!req.cookies.hasOwnProperty('email')) {
+        console.log("REDIRECTING");
+        //res.redirect('/');
+        res.json(false);
         console.log("FINISHED");
         res.end();
-    } else {
-        console.log("Sending false");
-        res.send(false);
-        res.end();
     }
-});*/
+});
 
 app.get("/tokensignin/:token/:a_token", function(req, res, next){
     console.log("hi")
     console.log("gtoken:" + req.params.token);
-    res.clearCookie("email", {path:'/'});
-    res.clearCookie("sessionKey", {path:'/'});
+    //res.clearCookie("email", {path:'/'});
+    //res.clearCookie("sessionKey", {path:'/'});
     console.log(req.cookies.email);
-    /*if (req.cookies.email){
-        res.send(true);
+    if (req.cookies.email){
+        res.json(true);
         console.log("FINISHED");
         res.end();
         return;
-    }*/
+    }
     var gtoken = req.params.token;
     var access_token = req.params.a_token;
     console.log("gtoken:" + gtoken);
@@ -178,7 +178,21 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
             }); */
             console.log("Given Email: " + givenEmail);
             console.log("Given Name: " + givenName);
-            await querier.async_signup(givenEmail, 'g', givenName, (result) => {
+            await querier.async_google_signin(givenEmail, (result) => {
+                if(result) {
+                    res.cookie("email", givenEmail);
+                    res.cookie("name", givenName);
+                    res.cookie("key", sessionkey);
+
+                    res.json(true);
+                } else {
+                    res.cookie("email", givenEmail);
+                    res.cookie("name", givenName);
+                    res.cookie("key", sessionkey);
+                    res.json(false);
+                }
+            });
+            /*await querier.async_signup(givenEmail, 'g', givenName, (result) => {
                 console.log("result: " + result);
                 if(result) {
                     res.cookie("email", givenEmail);
@@ -198,12 +212,12 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
                 console.log("---------here5.2----------");
                 console.log("---------here6----------");
             })
-            .catch(e => {console.log("PROBLEM!!!!!!!!!")});
+            .catch(e => {console.log("PROBLEM!!!!!!!!!")});*/
             //res.redirect("/projects");
             
         }
         else {
-            querier.signup(givenEmail, 'g', givenName, (result) => {
+            /*querier.signup(givenEmail, 'g', givenName, (result) => {
                 if(result) {
                     res.cookie("email", givenEmail);
                     res.cookie("key", sessionkey);
@@ -213,7 +227,7 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
                     console.log("FFFFF");
                     console.log("---------here200----------");
                 }
-            }); 
+            }); */
             //res.redirect("/projects");
         }
 
@@ -233,6 +247,37 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
     }*/
 });
 
+app.get('/api/signup/:username/:password', (req, res) => {
+    var username = req.params.username;
+    var password = req.params.password;
+    const email = req.cookies['email'];
+    const name = req.cookies['name'];
+    async function signing_up() {
+        await querier.async_signup(username, password, email, name, (result) => {
+            console.log("result: " + result);
+            if(result) {
+                console.log("IT WORKS GUYS");
+                //res.redirect(authUrl);
+                res.json(true);
+            } else {
+                console.log("RIP");
+                //res.send(true);
+                res.json(false);
+            }
+            console.log("---------here5----------");
+            //res.cookie("email", givenEmail);
+            console.log("---------here5.1----------");
+            //res.cookie("key", sessionkey);
+            console.log("---------here5.2----------");
+            console.log("---------here6----------");
+        })
+        .catch(e => {console.log(e)});
+    }
+
+    signing_up();
+    
+});
+
 app.get("/create-project", (req, res, next) => {
     //querier.create
 });
@@ -248,10 +293,10 @@ app.get("/create-project", (req, res, next) => {
     }
   
     return passed;
-}
+}*/
 
-function checkValidity(req, res, next){
-    if (loggedIn(req)) {
+/*function checkValidity(req, res){
+    /*if (loggedIn(req)) {
         console.log(req.url);
         if (req.url == "/tokenDone"){
             res.send("clear");
@@ -265,9 +310,24 @@ function checkValidity(req, res, next){
         console.log("REDIRECTING");
         res.redirect("/");
     }
-}*/
+    if (req.cookies.email){
+        console.log("EMAIL: " + req.cookies.email);
+        return;
+    } else {
+        res.redirect("/");
+    }
+}
 
-//app.use(checkValidity);
+app.use('*', (req, res) => {
+    console.log("USING THIS");
+    if (req.cookies.hasOwnProperty('email')){
+        console.log("EMAIL: " + req.cookies.email);
+        return;
+    } else {
+        console.log("redirect");
+        res.redirect("/");
+    }
+});
 
 function loggedIn(req) {
     // CHANGE WHEN READY
@@ -279,7 +339,7 @@ function loggedIn(req) {
     }
   
     return false;
-}
+}*/
 
 /*function checkValidity(req, res, next){
     console.log("checking validity");

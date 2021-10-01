@@ -10,6 +10,14 @@ import SideBar from '../components/SideBar';
 import "./css/NotificationPage.css"
 
 function NotificationPage() {
+    fetch('/api/checkvalidity')
+    .then(res => res.json())
+    .then(ready => { 
+        if(!ready) {
+            console.log("POOP");
+            window.location.replace("/");
+        }
+    });
     return (
         <div id="page">
             <div style={{display: 'flex', justifyContent: 'flex-start', flexGrow: '999'}}>

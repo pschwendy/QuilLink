@@ -4,7 +4,7 @@ import { GoogleLogin } from 'react-google-login';
 import { useEffect, Component } from "react";
 
 const client_id = "938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleusercontent.com";
-const SCOPES = "https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/documents.readonly https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly"
+const SCOPES = "https://www.googleapis.com/auth/documents" // https://www.googleapis.com/auth/documents.readonly https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly"
 
 function GoogleSignIn() {
     
@@ -17,12 +17,14 @@ function GoogleSignIn() {
         var access_token = googleUser.getAuthResponse().access_token;
         //console.log(googleUser.getAuthResponse());
         fetch('/tokensignin/' + token + '/' + access_token)
-        .then(res => { 
-            if(res) {
+        .then(res => res.json())
+        .then(ready => { 
+            if(ready) {
                 window.location.replace("/projects");
-                console.log(res);
+                console.log(ready);
             } else {
-                console.log("fail");
+                console.log("HELLO???????");
+                window.location.replace("/sign-up");
             }
         });
     }

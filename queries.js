@@ -48,7 +48,7 @@ class queries {
         });
     } // signup()
 
-    async async_signup(email, password, name, success) {
+    async async_google_signup(email, password, name, success) {
         console.log("quering...");
         console.log("email: " + email);
             console.log("name: " + name);
@@ -82,6 +82,49 @@ class queries {
             }
         })
         .catch(e => { throw e })
+    } // signup()
+
+    async async_signup(username, password, email, name, success) {
+        const query = {
+            text: "INSERT INTO users(email, username, password, name) VALUES ($1, $2, $3, $4)",
+            values: [email, username, password, name]
+        }
+
+        this.pool.query(query)
+        .then(() => {
+            return success(true);
+        })
+        .catch(e => { throw e });
+        /*const select = {
+            text: "SELECT password FROM users WHERE username=$1",
+            values: [username]
+        };
+
+        this.pool
+        .query(select)
+        .then(rows => {
+            console.log(rows.rowCount);
+            if (rows.rowCount == 0) {
+                const query = {
+                    text: "INSERT INTO users(email, username, password, name) VALUES ($1, $1, $2, $3)",
+                    values: [email, password, name]
+                }
+
+                this.pool.query(query, (err) => {
+                    if(err) {
+                        throw(err);
+                    }
+                    return success(true);
+                });
+            } else {
+                /*console.log("Calling signin");
+                this.async_signin(email, password, (result) => {
+                    return success(result);
+                })
+                console.log("...........what?");
+            }
+        })
+        .catch(e => { throw e });*/
     } // signup()
 
     // Queries.signin()
@@ -164,6 +207,37 @@ class queries {
                 return success(false);
             } 
             else if (rows.rows[0].password == password) {               
+                return success(true);
+            }
+
+            // Signs in if password is correct
+            /*bcrypt.compare(password, rows.password, (bcryptErr, result) => {
+                if(bcryptErr) {
+                    throw(bcryptErr);
+                } else if(result == true) {
+                    return callback(rows);
+                }
+            });*/
+        })
+        .catch(e => { throw e });
+    } // async_signin()
+
+    // Queries.signin()
+    // Checks if database query @ username has password = input password
+    // Input: username -> username used for finding user in database
+    // Input: password -> checks if found user has this password
+    async async_google_signin(email, success) {
+        const query = {
+            text: "SELECT * FROM users WHERE email=$1",
+            values: [email]
+        };
+
+        this.pool.query(query)
+        .then(rows => {
+            console.log("ROW COUNT: " + rows.rowCount);
+            if (rows.rowCount == 0) {
+                return success(false);
+            } else {               
                 return success(true);
             }
 

@@ -9,6 +9,14 @@ import SideBar from '../components/SideBar';
 import DocsParagraph from '../components/DocsParagraph';
 
 function DocViewer() {
+    fetch('/api/checkvalidity')
+    .then(res => res.json())
+    .then(ready => { 
+        if(!ready) {
+            console.log("POOP");
+            window.location.replace("/");
+        }
+    });
     const [paragraphContent, setContent] = useState("");
     const paragraphs = [];
     var getDocument = async function() {

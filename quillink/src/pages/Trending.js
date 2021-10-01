@@ -7,20 +7,13 @@ import './css/main.css';
 import Notifications from '../components/Notifications';
 import SideBar from '../components/SideBar';
 
-function Explore() {
-    fetch('/api/checkvalidity')
-    .then(res => res.json())
-    .then(ready => { 
-        if(!ready) {
-            console.log("POOP");
-            window.location.replace("/");
-        }
-    });
+function Trending() {
+    fetch('/api/checkvalidity');
     return (
         <div id="page">
             <SideBar 
                 className="side-area"
-                page={1}
+                page={2}
             />
             <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
                 <div id="projects" className="main-page">
@@ -51,4 +44,4 @@ function Explore() {
     );
 }
 
-export default Explore;
+export default Trending;

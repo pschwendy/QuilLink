@@ -9,6 +9,20 @@ import SideBar from '../components/SideBar';
 
 function DocEditor() {
     const [document, setDocument] = useState("");
+    fetch('/api/checkvalidity')
+    .then(res => res.json())
+    .then(ready => { 
+        if(!ready) {
+            console.log("POOP");
+            window.location.replace("/");
+        }
+    });
+    /*.then(res => res.json())
+    .then(ready => { 
+        if(!ready) {
+            window.location.replace("/");
+        }
+    });*/
     var getDocument = () => {
         console.log("hi");
         fetch('/api/getDocument')
