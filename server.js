@@ -53,7 +53,7 @@ const client = new OAuth2Client("938287165987-46mtptnb715mi1rop7l810o233ue470l.a
 const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 
 app.get('/api/getDocument', (req, res) => {
-    var link = "https://docs.google.com/document/d/12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g/edit?usp=sharing";
+    var link = "https://docs.google.com/document/d/12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g/";
     res.json(link);
 
     console.log('Sent link to document');
@@ -104,19 +104,20 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
     //res.clearCookie("email", {path:'/'});
     //res.clearCookie("sessionKey", {path:'/'});
     console.log(req.cookies.email);
-    if (req.cookies.email){
+    /*if (req.cookies.email){
         res.json(true);
         console.log("FINISHED");
         res.end();
         return;
-    }
+    }*/
     var gtoken = req.params.token;
     var access_token = req.params.a_token;
-    console.log("gtoken:" + gtoken);
+    console.log("access token: " + access_token);
+    
 
     //handle forms in these thingies
     async function verify() {
-        console.log("async gtoken:" + gtoken);
+        console.log("accessed");
         res.clearCookie("email");
         res.clearCookie("sessionKey");
         console.log("---------here----------");
