@@ -241,6 +241,24 @@ class queries {
         });
     } // signin()
 
+    // Queries.getUser()
+    // Checks if database query @ username has password = input password
+    // Input: username -> username used for finding user in database
+    // Input: password -> checks if found user has this password
+    getUserId(email, callback) {
+        const query = {
+            text: "SELECT * FROM users WHERE email=$1",
+            values: [email]
+        };
+
+        this.pool.query(query, (err, rows) => {
+            if(err) {
+                throw(err);
+            }
+            return callback(rows.rows[0].pk);
+        });
+    } // signin()
+
     // Queries.getUserProjects()
     getUserProjects(userpk, callback) {
         const query = {
@@ -258,6 +276,7 @@ class queries {
 
     // Recommends projects based on tags that users prefer
     recommendProjects(tags, callback) {
+
         const query = {
             text: "SELECT * FROM projects WHERE ",
             values: [tags]
@@ -279,6 +298,16 @@ class queries {
             return callback(rows);
         });
     } // recommendProjects()
+
+    randomRecommend(callback){
+        this.pool.query("SELECT * FROM projects", (err, rows) => {
+            if (err){
+                throw(err);
+            }
+            
+            return callback(rows);
+        });
+    }
 
     // Gets recent and top projects based on inserted tags
     getProjectsFromTags(tags, callback) {
@@ -318,13 +347,13 @@ class queries {
         });
     } // getProjectsFromTags()
 
-    createProject(owner, title, description, editLink, date) {
+    createProject(owner, title, description, editLink, tags) {
         const insert = {
-            text: "INSERT INTO projects (owner, title, description, edit_link, last_updated, views, likes) VALUES ($1, $2, $3, $4, $5, 0, 0) ",
-            values: [owner, title, description, editLink, date.getTime()]
+            text: "INSERT INTO projects (owner, title, description, edit_link, last_updated, data, views, likes) VALUES ($1, $2, $3, $4, to_timestamp($5), $6, 0, 0) ",
+            values: [owner, title, description, editLink, Date.now(), tags]
         };
 
-        this.pool.query(query, (err) => {
+        this.pool.query(insert, (err) => {
             if(err) {
                 throw(err);
             }

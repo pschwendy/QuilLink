@@ -16,6 +16,32 @@ function Explore() {
             window.location.replace("/");
         }
     });
+
+    const [exploreCards, SetExploreCards] = useState([]);
+    fetch('/api/explore').then(res => { 
+        console.log("SUCCESS");
+        console.log(res);
+        res.json().then(data => {
+            console.log(data);
+            var intermediateExploreCards = [];
+            for (var item of data){
+                console.log(res);
+                intermediateExploreCards.push(
+                    <ShareCard
+                    title={item.title}
+                    description={item.description}
+                    />
+                )
+            }
+            SetExploreCards(exploreCards.concat(intermediateExploreCards));
+        }).then(err => {
+            console.log("FAIL");
+        });
+        
+    }).then(ready => {
+        console.log("FAILURE");
+        console.log(ready);
+    });
     return (
         <div id="page">
             <SideBar 
@@ -24,6 +50,7 @@ function Explore() {
             />
             <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
                 <div id="projects" className="main-page">
+                    {exploreCards}
                     <ShareCard
                     title="Novel 1"
                     description="Novel 1 is the best novel ever created"

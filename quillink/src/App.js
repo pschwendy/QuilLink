@@ -5,6 +5,7 @@ import Projects from './pages/Projects';
 import Explore from './pages/Explore';
 import DocEditor from './pages/DocEditer';
 import NotificationsPage from "./pages/NotificationPage"
+import ProfilePage from "./pages/ProfilePage"
 import SignIn from './pages/SignInP2';
 import DocViewer from './pages/DovViewer';
 import SideBar from './components/SideBar';
@@ -33,6 +34,7 @@ function App() {
           <Route path='/:document/view' component={DocViewer}/>
           <Route path="/trending" component={Trending}/>
           <Route path="/notifications" component={NotificationsPage}/>
+          <Route path="/profile" component={ProfilePage}/>
         </Switch>
       </div>
     </div>

@@ -49,6 +49,9 @@ app.get('/api/login', (req, res) => {
 
 
 const {OAuth2Client} = require('google-auth-library');
+const { APIS } = require('googleapis/build/src/apis');
+const { docs } = require('googleapis/build/src/apis/docs');
+const { default: CreateProjectButton } = require('./quillink/src/components/CreateProject.js');
 //secret: 1W9hiCWmQkdq7dcJsKsP08Z3
 const client = new OAuth2Client("938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleusercontent.com", "1W9hiCWmQkdq7dcJsKsP08Z3");
 const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
@@ -101,15 +104,52 @@ app.get("/api/checkvalidity", (req, res, next) => {
 
 app.post("/api/createProject", (req, res) => {
     console.log(req.body);
+    const email = req.cookies.email;
+    const title = req.body.title;
+    const description = req.body.description;
+    const tagJSON = {
+        tags: req.body.tags
+    }
+    const tags = JSON.stringify(tagJSON);
+    console.log(tags);
+    const docs = google.docs({version: 'v1', auth: client});
+    const docId = {link: req.body.link === "" ? docs.documents.create({
+        "title": title
+    }).documentId : req.body.link.match(/[-\w]{25,}/)};
+    const edit_link = JSON.stringify(docId);
+    docs.documents.get({
+        documentId: docId.link,
+    }, (err, result) => {
+        if (err) {
+            res.json(69);
+        } else {
+            querier.getUserId(email, (pk) => {
+                querier.createProject(pk, title, description, edit_link, tags);
+                res.json(1);
+                console.log("CREATED PROJECT :)");
+            });
+        }
+    });
+    //querier.createProject(req.cookies.email, req.body.title, req.body.description, req.body.link, )
 
     //var data = res.json(req.body);
     //console.log(data.description)
 });
 
+app.get("/api/a", (req, res) => {
+    res.clearCookie("email", {path:'/'});
+    res.clearCookie("name", {path:'/'});
+    res.clearCookie("sessionKey", {path:'/'});
+    res.clearCookie("username", {path:'/'});
+    res.clearCookie();
+    console.log("hi!!");
+    console.log(req.cookies);
+});
+
 app.get("/tokensignin/:token/:a_token", function(req, res, next){
     console.log("hi")
     console.log("gtoken:" + req.params.token);
-    //res.clearCookie("email", {path:'/'});
+    res.clearCookie("email", {path:'/'});
     //res.clearCookie("sessionKey", {path:'/'});
     console.log(req.cookies.email);
     /*if (req.cookies.email){
@@ -370,6 +410,38 @@ function loggedIn(req) {
 }*/
 
 //app.use(checkValidity);
+
+app.get("/api/explore", function(req, res, next){
+    console.log("called upon!");
+    /*querier.randomRecommend(function(rows){
+
+        var indices = [];
+        var failures = 0;
+        while(indices.length < 10){
+            if (failures == 10){
+                break;
+            }
+            var index = Math.floor(Math.random() * rows.length);
+            if (indices.indexOf(index) == -1){
+                indices.push(index);
+                failures = 0;
+            }
+            else{
+                failures++;
+            }
+        }
+
+        var data = [];
+        for (index of indices){
+            data.push(rows[index]);
+        }
+
+        console.log(data);
+        res.json(data);
+    });*/
+    res.set("Content-Type", "application/json")
+    res.send([{title: 'TITLE',email: 'anthonyvarkey@gmail.com',description: 'My description'}]);
+});
 
 app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname + '/quillink/build/index.html'));

@@ -7,13 +7,12 @@ const client_id = "938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleuser
 const SCOPES = "https://www.googleapis.com/auth/documents" // https://www.googleapis.com/auth/documents.readonly https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly"
 
 function GoogleSignIn() {
-    
     const onSuccess = (googleUser) => {
         const profile = googleUser.getBasicProfile();
         console.log(googleUser.getAuthResponse());
         var token = googleUser.getAuthResponse().id_token;
         //var token = googleUser['code']
-        console.log(token);
+        console.log("SUCCESS");
         var access_token = googleUser.getAuthResponse().access_token;
         //console.log(googleUser.getAuthResponse());
         fetch('/tokensignin/' + token + '/' + access_token)
@@ -29,7 +28,7 @@ function GoogleSignIn() {
         });
     }
     var signedIn = false;
-    fetch('/api/checkvalidity')
+    /*fetch('/api/checkvalidity')
     .then(res => res.json())
     .then(result => { 
         if(result) {
@@ -39,7 +38,7 @@ function GoogleSignIn() {
         } else {
             signedIn = false;
         }
-    });
+    });*/
 
     return (
         <div>
@@ -49,7 +48,7 @@ function GoogleSignIn() {
                 onSuccess={onSuccess}
                 onFailure={console.log("problem")}
                 cookiePolicy={'single_host_origin'}
-                isSignedIn={signedIn}
+                isSignedIn={false}
                 scope={SCOPES}
                 accessType="offline"
                 approvalPrompt="force"
@@ -60,6 +59,7 @@ function GoogleSignIn() {
 }
 
 function SignIn() {
+    console.log("What?");
     return (
         <div id="sign-in">
             <script src="https://apis.google.com/js/platform.js" async defer></script>

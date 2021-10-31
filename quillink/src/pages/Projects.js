@@ -86,14 +86,14 @@ function Projects() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
-        /*.then(res => res.json())
+        .then(res => res.json())
         .then(result => {
-            if(result = "") {
+            if(result == 1) {
                 window.location.replace('/projects');
-            } else {
-                // error code
+            } else if (result == 69) {
+                alert("Link is invalid");
             }
-        });*/
+        });
     }
 
     return (

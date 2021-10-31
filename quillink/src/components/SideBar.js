@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {ListGroup, Container} from "react-bootstrap";
 import contract from '../images/contract.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencilAlt, faSearch, faArrowUp, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faSearch, faArrowUp, faBell, faUser} from "@fortawesome/free-solid-svg-icons";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function SideBar(props) {
@@ -41,6 +41,10 @@ function SideBar(props) {
                         <ListGroup.Item className={props.page === 3 ? "active item" : "item"} action href="/notifications">
                             <div className="sidebar-icon"><FontAwesomeIcon style={removeNames < 800 || collapsed ? {verticalAlign: "middle"}: {}} icon={faBell}/></div>
                             <div className={removeNames < 800 || collapsed ? "sidebar-name disappear" : "sidebar-name"}>Notifications</div>
+                        </ListGroup.Item>
+                        <ListGroup.Item className={props.page === 4 ? "active item" : "item"} action href="/profile">
+                            <div className="sidebar-icon"><FontAwesomeIcon style={removeNames < 800 || collapsed ? {verticalAlign: "middle"}: {}} icon={faUser}/></div>
+                            <div className={removeNames < 800 || collapsed ? "sidebar-name disappear" : "sidebar-name"}>Profile</div>
                         </ListGroup.Item>
                     </ListGroup>
                 </div>
