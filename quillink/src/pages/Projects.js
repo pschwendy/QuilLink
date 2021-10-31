@@ -13,16 +13,38 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Projects() {
     console.log(document.cookie);
-    fetch('/api/checkvalidity')
-    .then(res => res.json())
-    .then(ready => { 
-        if(!ready) {
-            console.log("POOP");
-            window.location.replace("/");
-        }
-    });
+    const checkValidity = () => {
+        fetch('/api/checkvalidity')
+        .then(res => res.json())
+        .then(ready => { 
+            if(!ready) {
+                console.log("POOP");
+                window.location.replace("/");
+            }
+        });
+    }
+    
+    const [projects, SetProjects] = useState([]);
+    const GetProjects = () => {
+        fetch('/api/getProjects')
+        .then(res => res.json())
+        .then(rows => {
+            for(var row of rows) {
+                console.log(row.edit_link)
+                SetProjects(projects.concat(
+                    <ProjectCard
+                        title={row.title}
+                        description={row.description}
+                        link={row.edit_link.link[0]}
+                    />
+                ))
+            }
+        });
+    }
     useEffect(() => {
         window.scrollTo(0, 0);
+        GetProjects();
+        checkValidity();
     }, []);
 
     const [toggle, SetToggle] = useState(true);
@@ -120,18 +142,7 @@ function Projects() {
                                 </span>
                                 { toggle === true ? 
                                     <div id="project-list">
-                                        <ProjectCard
-                                        title='My Project'
-                                        description='My Review'
-                                        />
-                                        <ProjectCard
-                                        title='My Project'
-                                        description='My Review'
-                                        />
-                                        <ProjectCard
-                                        title='My Project'
-                                        description='My Review'
-                                        />
+                                        {projects}
                                     </div>
                                     : 
                                     <div id="project-list">
@@ -156,7 +167,7 @@ function Projects() {
                                     Create Project
                                 </span>
                                 <div className="project-input-group">
-                                    <div>Title</div>
+                                    <div className="required-field">Title</div>
                                     <input value={title} onChange={UpdateTitle} className="project-input" type='text' required/>
                                 </div>
                                 <div className="project-input-group">
@@ -174,7 +185,7 @@ function Projects() {
                                     <input value={link} onChange={UpdateLink} className="project-input" type='text'/>
                                 </div>
                                 <div className="project-input-group">
-                                    <div>Description</div>
+                                    <div className="required-field">Description</div>
                                     <div className="">
                                         <textarea value={description} onChange={UpdateDescription} className="project-input" type='textarea' rows="5" cols="50" required/>
                                     </div>

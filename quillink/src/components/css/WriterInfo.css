@@ -29,3 +29,8 @@
     background-color: whitesmoke;
     cursor: pointer;
 }
+
+.editor > a, .editor > a:hover{
+    color: inherit;
+    text-decoration: inherit;
+}

@@ -16,8 +16,17 @@ function SignUp() {
     }
 
     const callSignUp = () => {
-        fetch('/api/signup/' + username + "/" + password)
-        .then(result => {result.json();})
+        var data = {
+            "username": username,
+            "password": password,
+        }
+
+        fetch('/api/signup/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
         .then(ready => { 
             if(ready) {
                 window.location.replace("/projects");
@@ -37,7 +46,7 @@ function SignUp() {
                                 <div><input className="sign-in-input" value={username} onChange={handleUsername} type='text' name="username" placeholder="Username"></input></div>
                                 <div><input className="sign-in-input" value={password} onChange={handlePassword} type='password' name="password" placeholder="Password"></input></div>
                                 <div><input className="sign-in-input" type='password' placeholder="Confirm Password"></input></div>
-                                <Button className="signin-button" type="submit" onClick={() => {callSignUp(); return false;}}>Sign Up</Button>
+                                <Button className="signin-button" onClick={callSignUp}>Sign Up</Button>
                             </form>
                         </div>
                     </Card.Body>

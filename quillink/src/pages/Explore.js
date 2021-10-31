@@ -8,40 +8,51 @@ import Notifications from '../components/Notifications';
 import SideBar from '../components/SideBar';
 
 function Explore() {
-    fetch('/api/checkvalidity')
-    .then(res => res.json())
-    .then(ready => { 
-        if(!ready) {
-            console.log("POOP");
-            window.location.replace("/");
-        }
-    });
+    const checkValidity = () => {
+        fetch('/api/checkvalidity')
+        .then(res => res.json())
+        .then(ready => { 
+            if(!ready) {
+                console.log("POOP");
+                window.location.replace("/");
+            }
+        });
+    }
 
     const [exploreCards, SetExploreCards] = useState([]);
-    fetch('/api/explore').then(res => { 
-        console.log("SUCCESS");
-        console.log(res);
-        res.json().then(data => {
-            console.log(data);
-            var intermediateExploreCards = [];
-            for (var item of data){
-                console.log(res);
-                intermediateExploreCards.push(
-                    <ShareCard
-                    title={item.title}
-                    description={item.description}
-                    />
-                )
-            }
-            SetExploreCards(exploreCards.concat(intermediateExploreCards));
-        }).then(err => {
-            console.log("FAIL");
+    const getExploreCards = () => {
+        fetch('/api/explore').then(res => { 
+            console.log("SUCCESS");
+            console.log(res);
+            res.json().then(data => {
+                console.log(data);
+                var intermediateExploreCards = [];
+                for (var item of data){
+                    console.log(res);
+                    intermediateExploreCards.push(
+                        <ShareCard
+                        title={item.title}
+                        description={item.description}
+                        />
+                    )
+                }
+                SetExploreCards(exploreCards.concat(intermediateExploreCards));
+            }).then(err => {
+                console.log("FAIL");
+            });
+            
+        }).then(ready => {
+            console.log("FAILURE");
+            console.log(ready);
         });
-        
-    }).then(ready => {
-        console.log("FAILURE");
-        console.log(ready);
-    });
+    }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        getExploreCards();
+        checkValidity();
+    }, []);
+    
     return (
         <div id="page">
             <SideBar 

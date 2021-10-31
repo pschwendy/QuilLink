@@ -56,8 +56,8 @@ const { default: CreateProjectButton } = require('./quillink/src/components/Crea
 const client = new OAuth2Client("938287165987-46mtptnb715mi1rop7l810o233ue470l.apps.googleusercontent.com", "1W9hiCWmQkdq7dcJsKsP08Z3");
 const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 
-app.get('/api/getDocument', (req, res) => {
-    var link = "https://docs.google.com/document/d/12b5TnxrHY9_3dsd1poFsBjDafoKkzvgOb5RIcFqJc-g/";
+app.get('/api/getDocument/:link', (req, res) => {
+    var link = "https://docs.google.com/document/d/" + req.params.link + '/';
     res.json(link);
 
     console.log('Sent link to document');
@@ -136,14 +136,14 @@ app.post("/api/createProject", (req, res) => {
     //console.log(data.description)
 });
 
-app.get("/api/a", (req, res) => {
-    res.clearCookie("email", {path:'/'});
-    res.clearCookie("name", {path:'/'});
-    res.clearCookie("sessionKey", {path:'/'});
-    res.clearCookie("username", {path:'/'});
-    res.clearCookie();
-    console.log("hi!!");
-    console.log(req.cookies);
+app.get("/api/getProjects", (req, res) => {
+    const email = req.cookies.email;
+    querier.getUserId(email, (pk) => {
+        querier.getUserProjects(pk, (rows) => {
+            res.json(rows);
+        });
+    });
+   
 });
 
 app.get("/tokensignin/:token/:a_token", function(req, res, next){
@@ -297,29 +297,20 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
     }*/
 });
 
-app.get('/api/signup/:username/:password', (req, res) => {
-    var username = req.params.username;
-    var password = req.params.password;
+app.post('/api/signup/', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
     const email = req.cookies['email'];
     const name = req.cookies['name'];
     async function signing_up() {
         await querier.async_signup(username, password, email, name, (result) => {
             console.log("result: " + result);
             if(result) {
-                console.log("IT WORKS GUYS");
-                //res.redirect(authUrl);
+                res.cookie("username", username);
                 res.json(true);
             } else {
-                console.log("RIP");
-                //res.send(true);
                 res.json(false);
             }
-            console.log("---------here5----------");
-            //res.cookie("email", givenEmail);
-            console.log("---------here5.1----------");
-            //res.cookie("key", sessionkey);
-            console.log("---------here5.2----------");
-            console.log("---------here6----------");
         })
         .catch(e => {console.log(e)});
     }

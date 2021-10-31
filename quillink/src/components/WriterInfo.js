@@ -25,12 +25,16 @@ function WriterInfo() {
                         <div id="editors">Editors</div>
                         <hr></hr>
                         <div className="editor">
-                            <div>Peter Schwendeman</div>
-                            <div>@pschwendy</div>
+                            <a href="/profile">
+                                <div>Peter Schwendeman</div>
+                                <div>@pschwendy</div>
+                            </a>
                         </div>
                         <div className="editor">
-                            <div>Tony Varkey</div>
-                            <div>@theYNOT_varkey</div>
+                            <a href="/profile">
+                                <div>Tony Varkey</div>
+                                <div>@theYNOT_varkey</div>
+                            </a>
                         </div>
                     </div>  
                 </div>

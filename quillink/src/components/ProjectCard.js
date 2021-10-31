@@ -13,7 +13,7 @@ function ProjectCard(props) {
                 {props.description}
                 </Card.Text>
                 <div className="button-holder">
-                    <Button className="go-to" variant="primary">Go to Project</Button>
+                    <a href={"/" + props.link + "/edit"}><Button className="go-to" variant="primary">Go to Project</Button></a>
                 </div>
             </Card.Body>
         </Card>

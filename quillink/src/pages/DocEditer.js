@@ -24,13 +24,17 @@ function DocEditor() {
         }
     });*/
     var getDocument = () => {
-        console.log("hi");
-        fetch('/api/getDocument')
+        /*let path = window.location.pathname;
+        path = path.substring(1, path.length - 5);
+        fetch('/api/getDocument/' + path)
         .then(res => res.json())
         .then(link => { 
             setDocument(link);
             console.log(link);
-        });
+        });*/
+        let link = window.location.pathname;
+        link = link.substring(1, link.length - 5);
+        setDocument("https://docs.google.com/document/d/" + link + '/');
     };
 
     useEffect(() => {

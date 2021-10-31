@@ -262,7 +262,7 @@ class queries {
     // Queries.getUserProjects()
     getUserProjects(userpk, callback) {
         const query = {
-            text: "SELECT * FROM projects WHERE userpk=$1",
+            text: "SELECT * FROM projects WHERE owner=$1",
             values: [userpk]
         }
 
@@ -270,7 +270,7 @@ class queries {
             if(err) {
                 throw(err);
             }
-            return callback(rows);
+            return callback(rows.rows);
         });
     } // getUserProjects()
 

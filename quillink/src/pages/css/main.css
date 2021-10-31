@@ -39,3 +39,8 @@
     position: relative;
     flex-grow: 1;
 }
+
+.required-field::after {
+    content: "*";
+    color: orangered;
+}
