@@ -12,6 +12,7 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 
+app.use(express.json())
 
 const Queries = require('./queries.js');
 
@@ -93,9 +94,16 @@ app.get("/api/checkvalidity", (req, res, next) => {
         console.log("REDIRECTING");
         //res.redirect('/');
         res.json(false);
-        console.log("FINISHED");
-        res.end();
+    } else {
+        res.json(true);
     }
+});
+
+app.post("/api/createProject", (req, res) => {
+    console.log(req.body);
+
+    //var data = res.json(req.body);
+    //console.log(data.description)
 });
 
 app.get("/tokensignin/:token/:a_token", function(req, res, next){
@@ -179,9 +187,10 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
             }); */
             console.log("Given Email: " + givenEmail);
             console.log("Given Name: " + givenName);
-            await querier.async_google_signin(givenEmail, (result) => {
+            await querier.async_google_signin(givenEmail, (result, username) => {
                 if(result) {
                     res.cookie("email", givenEmail);
+                    res.cookie("username", username);
                     res.cookie("name", givenName);
                     res.cookie("key", sessionkey);
 

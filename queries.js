@@ -95,36 +95,6 @@ class queries {
             return success(true);
         })
         .catch(e => { throw e });
-        /*const select = {
-            text: "SELECT password FROM users WHERE username=$1",
-            values: [username]
-        };
-
-        this.pool
-        .query(select)
-        .then(rows => {
-            console.log(rows.rowCount);
-            if (rows.rowCount == 0) {
-                const query = {
-                    text: "INSERT INTO users(email, username, password, name) VALUES ($1, $1, $2, $3)",
-                    values: [email, password, name]
-                }
-
-                this.pool.query(query, (err) => {
-                    if(err) {
-                        throw(err);
-                    }
-                    return success(true);
-                });
-            } else {
-                /*console.log("Calling signin");
-                this.async_signin(email, password, (result) => {
-                    return success(result);
-                })
-                console.log("...........what?");
-            }
-        })
-        .catch(e => { throw e });*/
     } // signup()
 
     // Queries.signin()
@@ -236,9 +206,9 @@ class queries {
         .then(rows => {
             console.log("ROW COUNT: " + rows.rowCount);
             if (rows.rowCount == 0) {
-                return success(false);
+                return success(false, "");
             } else {               
-                return success(true);
+                return success(true, rows.rows[0].username);
             }
 
             // Signs in if password is correct

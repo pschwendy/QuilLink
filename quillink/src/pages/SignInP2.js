@@ -29,9 +29,13 @@ function GoogleSignIn() {
         });
     }
     var signedIn = false;
-    fetch('/checkvalidity').then(res => { 
-        if(res) {
+    fetch('/api/checkvalidity')
+    .then(res => res.json())
+    .then(result => { 
+        if(result) {
+            console.log("HELLO");
             signedIn = true;
+            window.location.replace("/projects");
         } else {
             signedIn = false;
         }

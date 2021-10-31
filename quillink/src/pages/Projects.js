@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Projects() {
+    console.log(document.cookie);
     fetch('/api/checkvalidity')
     .then(res => res.json())
     .then(ready => { 
@@ -33,10 +34,67 @@ function Projects() {
     };
 
     const [create, SetCreate] = useState(false);
-    const ToggleCreateProject = () => {
-        SetCreate(true);
+    const ToggleCreateProject = (event) => {
+        SetCreate(!create);
         console.log("ready to create project");
+        //event.preventDefault();
     };
+
+    const [title, SetTitle] = useState("");
+    const UpdateTitle = (event) => {
+        SetTitle(event.target.value);
+    }
+
+    const [addTag, SetTag] = useState("");
+    const UpdateTag = (event) => {
+        SetTag(event.target.value);
+    }
+
+    const [tags, SetTags] = useState([]);
+    const [tagstrings, SetTagStrings] = useState([]);
+    const AddToTags = () => {
+        SetTag(addTag.charAt(0).toUpperCase() + addTag.slice(1));
+        SetTags(tags.concat(
+            <div className="tag">
+                {addTag}
+            </div>
+        ));
+        SetTagStrings(tagstrings.concat(addTag));
+        SetTag("");
+    }
+
+    const [link, SetLink] = useState("");
+    const UpdateLink = (event) => {
+        SetLink(event.target.value);
+    }
+
+    const [description, SetDescription] = useState("");
+    const UpdateDescription = (event) => {
+        SetDescription(event.target.value);
+    }
+
+    const CreateProject = () => {
+        var data = {
+            "title": title,
+            "tags": tagstrings,
+            "link": link,
+            "description": description
+        }
+
+        fetch('/api/createProject', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        /*.then(res => res.json())
+        .then(result => {
+            if(result = "") {
+                window.location.replace('/projects');
+            } else {
+                // error code
+            }
+        });*/
+    }
 
     return (
         <div id="page">
@@ -66,9 +124,25 @@ function Projects() {
                                         title='My Project'
                                         description='My Review'
                                         />
+                                        <ProjectCard
+                                        title='My Project'
+                                        description='My Review'
+                                        />
+                                        <ProjectCard
+                                        title='My Project'
+                                        description='My Review'
+                                        />
                                     </div>
                                     : 
                                     <div id="project-list">
+                                        <ProjectCard
+                                        title='My Review'
+                                        description='My Review'
+                                        />
+                                        <ProjectCard
+                                        title='My Review'
+                                        description='My Review'
+                                        />
                                         <ProjectCard
                                         title='My Review'
                                         description='My Review'
@@ -83,53 +157,34 @@ function Projects() {
                                 </span>
                                 <div className="project-input-group">
                                     <div>Title</div>
-                                    <input className="project-input" type='text'/>
+                                    <input value={title} onChange={UpdateTitle} className="project-input" type='text' required/>
                                 </div>
                                 <div className="project-input-group">
                                     <div>Tags</div>
                                     <div className="group">
-                                        <input className="project-input" type='text'/>
-                                        <Button>Add</Button>
+                                        <input value={addTag} onChange={UpdateTag} className="project-input" type='text' required/>
+                                        <Button onClick={AddToTags}>Add</Button>
+                                    </div>
+                                    <div className="added-tags">
+                                        {tags}
                                     </div>
                                 </div>
                                 <div className="project-input-group">
+                                    <div>Link (optional)</div>
+                                    <input value={link} onChange={UpdateLink} className="project-input" type='text'/>
+                                </div>
+                                <div className="project-input-group">
                                     <div>Description</div>
-                                    <div className="group">
-                                        <input className="project-input" type='textarea' rows="4" cols="50"/>
+                                    <div className="">
+                                        <textarea value={description} onChange={UpdateDescription} className="project-input" type='textarea' rows="5" cols="50" required/>
                                     </div>
                                 </div>
                                 <div id="button-group">
-                                    <Button className="float-right">Create Project</Button>
-                                    <Button className="float-right">Exit</Button>
+                                    <Button className="float-right" onClick={CreateProject}>Create Project</Button>
+                                    <Button className="float-right" onClick={ToggleCreateProject}>Exit</Button>
                                 </div>
                             </div>
-                        }  
-                        {/*<div>
-                            {/*<span className="p-toggler bolded">
-                                <div onClick={ToggleProjects} className="toggle" id="first-toggle">
-                                    <div className = "" className={toggle === true ?  "toggled": ""}> <a> My Projects </a> </div> 
-                                </div>
-                                <div onClick={ToggleReviewing} className="toggle">
-                                    <div className = "" className={toggle === true ?  "": "toggled"}> <a> Reviewing </a> </div>
-                                </div>
-                            </span>}
-                            
-                            { toggle === true ? 
-                            <div id="project-list">
-                                <ShareCard
-                                title='My Project'
-                                description='My Review'
-                                />
-                            </div>
-                            : 
-                            <div id="project-list">
-                                <ShareCard
-                                title='My Review'
-                                description='My Review'
-                                />
-                            </div>
-                            }
-                        </div>*/}
+                        }
                     </div>
                 </div>
             

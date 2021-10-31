@@ -36,3 +36,16 @@
 .toggled {
     border-bottom: 1px solid darkblue !important; 
 }
+
+.added-tags{
+    max-height: 100px;
+    margin: 10px 10px;
+    overflow-y: scroll;
+}
+
+.tag {
+    height: 30px;
+    width: 100%;
+    background-color: whitesmoke;
+    border-bottom: 1px solid gainsboro;
+}
