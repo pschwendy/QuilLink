@@ -1,6 +1,23 @@
 const { Pool } = require('pg');
 const bcrypt = require("bcryptjs");
 // await pool.connect()
+const secrets = require('../middleware/ENV').default;
+const env = process.env.NODE_ENV || 'development';
+
+let connectionString = {
+    user: secrets.user,
+    database: secrets.testDb,
+    host: secrets.host
+};
+// checking to know the environment and suitable connection string to use
+if (env === 'development') {
+    connectionString.database = secrets.database;
+} else {
+    connectionString = {
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+    };
+};
 
 class queries {
     // Constructor
@@ -12,12 +29,7 @@ class queries {
             password: 'supersecretpassword',
             port: 5432,
         });*/
-        this.pool = new Pool({
-            user: 'kangzufgdpbqrc',
-            database: 'dbhn5f3mhik780',
-            password: '5e437a2007bf709eec085261cc500f4603b964737efde32fe288f38d824d9fa6',
-            port: 5432,
-        });
+        this.pool = new Pool(connectionString);
         this.pool.connect();
     }
 
