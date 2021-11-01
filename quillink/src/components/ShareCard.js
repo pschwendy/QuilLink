@@ -7,7 +7,7 @@ function ShareCard(props) {
         <Card className="project-card" style={{width: '100%'}}>
             <Card.Header className="profile-header">
                 <img src={userImage} className="pfp"/>
-                <div className="username">@username/email{props.username}</div>
+                <div className="username">@{props.username}</div>
             </Card.Header>
             <Card.Img variant="top"/>
             <Card.Body>
@@ -16,7 +16,7 @@ function ShareCard(props) {
                 {props.description}
                 </Card.Text>
                 <div className="button-holder">
-                    <a href="/lsadsd/view"><Button className="go-to" variant="primary">Go to Project</Button></a>
+                    <a href={"/" + props.link + "/view"}><Button className="go-to" variant="primary">Go to Project</Button></a>
                 </div>
             </Card.Body>
         </Card>

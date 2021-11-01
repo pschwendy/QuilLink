@@ -8,6 +8,12 @@ import './css/DocEditor.css';
 import SideBar from '../components/SideBar';
 import DocsParagraph from '../components/DocsParagraph';
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift().replace(/%20/g, " ");
+}
+
 function DocViewer() {
     fetch('/api/checkvalidity')
     .then(res => res.json())
@@ -18,12 +24,33 @@ function DocViewer() {
         }
     });
     const [paragraphContent, setContent] = useState("");
+    const [title, setTitle] = useState("");
+    const [writer, setWriter] = useState("");
+    const [reviewers, setReviewers] = useState([]);
+    const [description, setDescription] = useState("");
+    const [requested, SetRequested] = useState(false);
+    let path = window.location.pathname;
+    path = path.substring(1, path.length - 5);
     const paragraphs = [];
     var getDocument = async function() {
         console.log("hi");
-        fetch('/api/viewDocument')
+        
+        fetch('/api/viewDocument', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                docId: path
+            })
+        })
         .then(res => res.json())
-        .then(resContent => { 
+        .then(project => { 
+            const resContent = project.content;
+            const info = project.info;
+            setTitle(info.title);
+            setDescription(info.description);
+            setReviewers(info.data.reviewers);
+            setWriter(info.owner);
+            console.log(reviewers);
             console.log("IN HERE");
             console.log(resContent);
             var bulletID = "";
@@ -83,7 +110,18 @@ function DocViewer() {
             }
             console.log("PARAGRAPH");
             setContent(paragraphs);
-            console.log(paragraphs);
+            
+            try {
+                console.log(info.data.requested_reviewers);
+                for(var requestedReviewer of info.data.requested_reviewers) {
+                    if(requestedReviewer == getCookie("username")) {
+                        SetRequested(true);
+                    }
+                }
+            } catch {
+                console.log("old version");
+            }
+            
         });
     };
 
@@ -105,7 +143,14 @@ function DocViewer() {
                         />*/}
                 </div>
             </div>
-            <WriterInfo style={{flexGrow: '2'}} className="side-info" />
+            <WriterInfo style={{flexGrow: '2'}} className="side-info" 
+                title={title}
+                description={description}
+                writer={writer}
+                reviewers={reviewers}
+                requested={requested}
+                projectpk={path}
+            />
         </div>
     );
 }

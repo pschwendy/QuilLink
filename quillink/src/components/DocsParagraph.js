@@ -26,7 +26,6 @@ function DocsParagraph(props) {
         pfontSize = "";
     }
     var ptextIndent;
-    console.log(paragraphStyle.indentStart);
     if(paragraphStyle.hasOwnProperty("indentStart")) {
         ptextIndent = paragraphStyle.indentStart.magnitude + "pt";
     } else {
@@ -49,7 +48,7 @@ function DocsParagraph(props) {
         textDecoration: underline + " " + strikethrough,
         fontSize: pfontSize,
         marginLeft: ptextIndent,
-        "text-align": alignment,
+        textAlign: alignment,
     }
 
     return (

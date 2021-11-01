@@ -29,16 +29,19 @@ function Projects() {
         fetch('/api/getProjects')
         .then(res => res.json())
         .then(rows => {
+            console.log(rows);
+            const projectsI = [];
             for(var row of rows) {
                 console.log(row.edit_link)
-                SetProjects(projects.concat(
+                projectsI.push(
                     <ProjectCard
                         title={row.title}
                         description={row.description}
-                        link={row.edit_link.link[0]}
+                        link={row.edit_link}
                     />
-                ))
+                );
             }
+            SetProjects(projects.concat(projectsI));
         });
     }
     useEffect(() => {

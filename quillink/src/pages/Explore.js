@@ -33,6 +33,8 @@ function Explore() {
                         <ShareCard
                         title={item.title}
                         description={item.description}
+                        username={item.owner}
+                        link={item.pk}
                         />
                     )
                 }
@@ -62,26 +64,6 @@ function Explore() {
             <div style={{display: 'flex', justifyContent: 'space-between', flexGrow: '2'}}>
                 <div id="projects" className="main-page">
                     {exploreCards}
-                    <ShareCard
-                    title="Novel 1"
-                    description="Novel 1 is the best novel ever created"
-                    />
-                    <ShareCard
-                    title="Novel 2"
-                    description="Novel 2 is the best novel ever created"
-                    />
-                    <ShareCard
-                    title="Novel 3"
-                    description="Novel 3 is the best novel ever created"
-                    />
-                    <ShareCard
-                    title="Novel 3"
-                    description="Novel 3 is the best novel ever created"
-                    />
-                    <ShareCard
-                    title="Novel 3"
-                    description="Novel 3 is the best novel ever created"
-                    />
                 </div>
             </div>
             <Notifications style={{flexGrow: '2'}} className="side-info" />

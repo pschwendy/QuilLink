@@ -3,8 +3,9 @@ import './css/SideBar.css';
 import { Container, Card, Button} from "react-bootstrap";
 import './css/Notifications.css';
 import './css/WriterInfo.css';
+import { propTypes } from 'react-bootstrap/esm/Image';
 
-function WriterInfo() {
+function WriterInfo(props) {
     const [toggle, SetToggle] = useState(true);
     const ToggleProjects = () => {
         SetToggle(true);
@@ -12,14 +13,26 @@ function WriterInfo() {
     const ToggleReviewing = () => {
         SetToggle(false);
     };
+
+    const requestEdit = () => {
+        console.log("requesting edit")
+        fetch('/api/requestEdit', {
+            method:"POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                projectpk: props.projectpk
+            })
+        });
+    };
+
     return (
         <div id="notif-bar">
             <div id="inner-notif">
                 <div className="writer-info">
-                    By Aarnav Undadkat
-                    <div id="proj-title">The Ultimate Guide to BPA</div>
+                    By {props.writer}
+                    <div id="proj-title">{props.title}</div>
                     <br></br>
-                    <div id="description">Hi, I'm Aarnav, president of BPA at Huron. From placing nationally to making board, this short novel entails everything you will need to know to become an ultimate BPA SUPERSTAR!</div>
+                    <div id="description">{props.description}</div>
                     <div id="blank-box"></div>
                     <div id="editor-info">
                         <div id="editors">Editors</div>
@@ -35,6 +48,18 @@ function WriterInfo() {
                                 <div>Tony Varkey</div>
                                 <div>@theYNOT_varkey</div>
                             </a>
+                        </div>
+                        <hr></hr>
+                        <div onClick={requestEdit} className="editor">
+                        { props.requested === true ?
+                            <div>
+                                Edit Requested
+                            </div>
+                            : 
+                            <div>
+                                Request to edit
+                            </div>
+                        }
                         </div>
                     </div>  
                 </div>

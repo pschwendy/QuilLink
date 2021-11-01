@@ -17,6 +17,7 @@ app.use(express.json())
 const Queries = require('./queries.js');
 
 const querier = new Queries();
+let requested_reviewers = [];
 
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'quillink/build')));
@@ -70,16 +71,30 @@ app.get('/api/getDocument/:link', (req, res) => {
     });
 });
 
-app.get('/api/viewDocument', (req, res) => {
-    const docs = google.docs({version: 'v1', auth: client});
-    docs.documents.get({
-        documentId: '13Vs6lMQV75y-lphx7AnKoFMOJ4qfb2Z4r36az74B8kw',
-    }, (err, result) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        console.log(`The title of the document is: ${result.data.title}`);
-        console.log(result.data);
-        res.json(result.data.body.content);
-    });
+app.post('/api/viewDocument', (req, res) => {
+    const id = req.body.docId;
+    querier.getProjectInfo(id, (info) => {
+        link = info.edit_link;
+        console.log(info.description);
+        const docs = google.docs({version: 'v1', auth: client});
+        docs.documents.get({
+            documentId: link,
+        }, (err, result) => {
+            if (err) return console.log('The API returned an error: ' + err);
+            res.json({
+                content: result.data.body.content,
+                info: info
+            });
+        });
+        console.log("DRIVE");
+        const drive = google.drive({version: 'v3', auth: client});
+        drive.permissions.list({
+            fileId: link
+        }, (err, result) => {
+            if (err) return console.log('The API returned an error: ' + err);
+            console.log(result);
+        });
+    })         
 });
 
 function createSessionKey(){
@@ -103,33 +118,70 @@ app.get("/api/checkvalidity", (req, res, next) => {
 });
 
 app.post("/api/createProject", (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     const email = req.cookies.email;
     const title = req.body.title;
     const description = req.body.description;
     const tagJSON = {
-        tags: req.body.tags
+        tags: req.body.tags,
+        reviewers: [],
+        requested_reviewers: []
     }
     const tags = JSON.stringify(tagJSON);
     console.log(tags);
     const docs = google.docs({version: 'v1', auth: client});
-    const docId = {link: req.body.link === "" ? docs.documents.create({
-        "title": title
-    }).documentId : req.body.link.match(/[-\w]{25,}/)};
-    const edit_link = JSON.stringify(docId);
-    docs.documents.get({
-        documentId: docId.link,
-    }, (err, result) => {
-        if (err) {
-            res.json(69);
-        } else {
-            querier.getUserId(email, (pk) => {
-                querier.createProject(pk, title, description, edit_link, tags);
-                res.json(1);
-                console.log("CREATED PROJECT :)");
+    var doc = {};
+    // const new_link = ;
+    if(req.body.link == "" || req.body.link == null) {
+        docs.documents.create({"title": title}, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(result.data)
+            const docId = result.data.documentId;
+            docs.documents.get({
+                documentId: docId,
+            }, (err, result) => {
+                if (err) {
+                    res.json(69);
+                } else {
+                    querier.getUserId(email, (pk) => {
+                        querier.createProject(pk, title, description, docId, tags);
+                        const drive = google.drive({version: 'v3', auth: client});
+                        drive.permissions.create({
+                            fileId: docId,
+                            requestBody: {
+                              role: 'reader',
+                              type: 'anyone',
+                            }
+                        });
+                        res.json(1);
+                        console.log("CREATED PROJECT :)");
+                    });
+                }
             });
-        }
-    });
+        });
+        /*console.log(doc);
+        console.log(JSON.stringify(doc));
+        console.log(doc.documentId);*/
+    } else {
+        const docId = req.body.link.match(/[-\w]{25,}/)
+        console.log(docId);
+        console.log("DOC ID: LINK - " + docId);
+        docs.documents.get({
+            documentId: docId,
+        }, (err, result) => {
+            if (err) {
+                res.json(69);
+            } else {
+                querier.getUserId(email, (pk) => {
+                    querier.createProject(pk, title, description, docId, tags);
+                    res.json(1);
+                    console.log("CREATED PROJECT :)");
+                });
+            }
+        });
+    }
     //querier.createProject(req.cookies.email, req.body.title, req.body.description, req.body.link, )
 
     //var data = res.json(req.body);
@@ -227,13 +279,20 @@ app.get("/tokensignin/:token/:a_token", function(req, res, next){
             }); */
             console.log("Given Email: " + givenEmail);
             console.log("Given Name: " + givenName);
-            await querier.async_google_signin(givenEmail, (result, username) => {
+            await querier.async_google_signin(givenEmail, (result, username, pk) => {
                 if(result) {
                     res.cookie("email", givenEmail);
                     res.cookie("username", username);
                     res.cookie("name", givenName);
                     res.cookie("key", sessionkey);
-
+                    res.cookie("id", pk);
+                    
+                    querier.getUserId(givenEmail, (pk) => {
+                        querier.checkRequests(pk, (rows) => {
+                            requested_reviewers = rows;
+                            console.log(rows);
+                        });
+                    });
                     res.json(true);
                 } else {
                     res.cookie("email", givenEmail);
@@ -323,89 +382,9 @@ app.get("/create-project", (req, res, next) => {
     //querier.create
 });
 
-/*function loggedIn(req){
-    //CHANGE WHEN READY
-    var passed = false;
-    console.log("MAIL: " + req.cookies.email);
-    for (student of studentData){
-      if (student.email == req.cookies.email){ //&& student.sessionkey == req.cookies.key){
-        passed = true;
-      }
-    }
-  
-    return passed;
-}*/
-
-/*function checkValidity(req, res){
-    /*if (loggedIn(req)) {
-        console.log(req.url);
-        if (req.url == "/tokenDone"){
-            res.send("clear");
-        }
-        else{
-            next();
-        }
-      
-    }
-    else {
-        console.log("REDIRECTING");
-        res.redirect("/");
-    }
-    if (req.cookies.email){
-        console.log("EMAIL: " + req.cookies.email);
-        return;
-    } else {
-        res.redirect("/");
-    }
-}
-
-app.use('*', (req, res) => {
-    console.log("USING THIS");
-    if (req.cookies.hasOwnProperty('email')){
-        console.log("EMAIL: " + req.cookies.email);
-        return;
-    } else {
-        console.log("redirect");
-        res.redirect("/");
-    }
-});
-
-function loggedIn(req) {
-    // CHANGE WHEN READY
-    console.log("MAIL: " + req.cookies.email);
-    for (student of studentData){
-      if (student.email == req.cookies.email){ //&& student.sessionkey == req.cookies.key){
-        return true;
-      }
-    }
-  
-    return false;
-}*/
-
-/*function checkValidity(req, res, next){
-    console.log("checking validity");
-    if (loggedIn(req)) {
-        console.log(req.url);
-        if (req.url == "/tokenDone"){
-            res.send("clear");
-        }
-        else{
-            next();
-        }
-      
-    }
-    else {
-        console.log("REDIRECTING");
-        res.redirect("/");
-    }
-}*/
-
-//app.use(checkValidity);
-
 app.get("/api/explore", function(req, res, next){
     console.log("called upon!");
-    /*querier.randomRecommend(function(rows){
-
+    querier.randomRecommend(function(rows){
         var indices = [];
         var failures = 0;
         while(indices.length < 10){
@@ -427,11 +406,111 @@ app.get("/api/explore", function(req, res, next){
             data.push(rows[index]);
         }
 
-        console.log(data);
-        res.json(data);
-    });*/
-    res.set("Content-Type", "application/json")
-    res.send([{title: 'TITLE',email: 'anthonyvarkey@gmail.com',description: 'My description'}]);
+        function callback(){
+            console.log("Moving on");
+            res.json(data);
+        }
+        
+        try {
+            var counter = 0;
+            data.forEach(function(item, index){
+                querier.getUsername(item.owner, (username) => {
+                    console.log("index is: " + index);
+                    
+                    data[index].owner = username;
+                    console.log(data[index]);
+                    console.log("username is: " + username);
+                    counter++;
+                    if (counter == data.length){
+                        callback();
+                    }
+                });
+            }); 
+        } catch {
+            console.log("not rn");
+        }
+        
+
+
+        /*async function sendData() {
+            console.log(data);
+            console.log(data.length);
+            for (var i = 0; i < data.length; i++){
+                console.log("before: " + i);
+                await querier.getUsername(data[i].owner, (username) => {
+                    console.log("in get username: " + i);
+                    data[i].owner = username;
+                });
+                console.log("after: " + i);
+            }
+            res.json(data);
+            console.log(data);
+        }
+        sendData().catch(console.error);*/
+        //res.json(data);
+    });
+});
+
+app.get("/api/userStats", function(req, res){
+    var pk = req.cookies.id;
+    querier.getUserProjects(pk, function(rows){
+        var numUserProjects = rows.length;
+        querier.getUserReviews(pk, function(newRows){
+            var numUserReviews = newRows.length;
+            res.json({projectsCreated: numUserProjects, projectsReviewed: numUserReviews});
+        });
+    });
+});
+
+app.get("/api/checkRequests", function(req, res, next){
+    var pk = req.cookies.id;
+    console.log("Checking for requests");
+    if (!req.cookies.hasOwnProperty('email')) {
+        return;
+    }
+
+    querier.checkRequests(pk, (rows) => {
+        function callback() {
+            console.log("trying to send back rows");
+            res.json(rows);
+        }
+        var counter = 0;
+        try {
+            callback();
+        } catch {
+            console.log("can't iterate rows");
+        }
+        
+    });
+});
+
+app.post("/api/requestEdit", function(req, res, next) {
+    console.log("edit requested");
+    var username = req.cookies.username;
+    var projectpk = req.body.projectpk;
+    querier.requestReview(projectpk, username);
+});
+
+app.post("/api/acceptRequest", function(req, res, next) {
+    console.log("accepting requested");
+    var username = req.body.username;
+    var projectpk = req.body.projectpk;
+    querier.addReviewer(projectpk, username, () => {
+        console.log("sending back");
+        res.json(true);
+        /*const drive = google.drive({version: 'v3', auth});
+        drive.files.permissions.get()*/
+    });
+});
+
+app.post("/api/declineRequest", function(req, res, next) {
+    console.log("declining requested");
+    var username = req.body.username;
+    var projectpk = req.body.projectpk;
+    querier.removeRequest(projectpk, username, () => {
+        console.log("sending back");
+        res.json(true);
+    });
 });
 
 app.get('*', (req, res, next) => {

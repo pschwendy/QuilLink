@@ -137,6 +137,7 @@ function SignIn() {
         <div id="sign-in">
             <script src="https://apis.google.com/js/platform.js" async defer></script>
             <div id="sign-in-card">
+            <h1>Quillink</h1>
                 <Card id="the-card">
                     <Card.Body>
                         <div className="section">

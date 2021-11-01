@@ -206,9 +206,9 @@ class queries {
         .then(rows => {
             console.log("ROW COUNT: " + rows.rowCount);
             if (rows.rowCount == 0) {
-                return success(false, "");
+                return success(false, "", 0);
             } else {               
-                return success(true, rows.rows[0].username);
+                return success(true, rows.rows[0].username, rows.rows[0].pk);
             }
 
             // Signs in if password is correct
@@ -259,6 +259,68 @@ class queries {
         });
     } // signin()
 
+    getEmail(userpk, callback){
+        const query = {
+            text: "SELECT * FROM users WHERE pk=$1",
+            values: [userpk]
+        };
+
+        this.pool.query(query, (err, rows) => {
+            if (err){
+                throw (err);
+            }
+            if (rows.rows.length != 0){
+                return callback(rows.rows[0].email);
+            }
+            else{
+                return callback("");
+            }
+            
+        });
+    }
+
+    getUsername(userpk, callback){
+        const query = {
+            text: "SELECT * FROM users WHERE pk=$1",
+            values: [userpk]
+        };
+
+        this.pool.query(query, (err, rows) => {
+            if (err){
+                throw (err);
+            }
+            if (rows.rows.length != 0){
+                return callback(rows.rows[0].username);
+            }
+            else{
+                return callback("");
+            }
+        });
+    }
+
+    getProjectInfo(pk, callback){
+        const query = {
+            text: "SELECT * FROM projects WHERE pk=$1",
+            values: [pk]
+        };
+
+        this.pool.query(query, (err, rows) => {
+            if (err){
+                throw (err);
+            }
+            this.getUsername(rows.rows[0].owner, (username) => { 
+                if (rows.rows.length != 0){
+                    rows.rows[0].owner = username;
+                    return callback(rows.rows[0]);
+                }
+                else{
+                    return callback("");
+                }
+            })
+            
+        });
+    }
+
     // Queries.getUserProjects()
     getUserProjects(userpk, callback) {
         const query = {
@@ -273,6 +335,101 @@ class queries {
             return callback(rows.rows);
         });
     } // getUserProjects()
+
+    getUserReviews(userpk, callback){
+        const query = {
+            text: "SELECT * FROM projects WHERE (data -> 'reviewers')::jsonb ? $1",
+            values:[userpk]
+        }
+        this.pool.query(query, (err, rows) => {
+            if (err){
+                throw (err);
+            }
+            return callback(rows.rows);
+        });
+    }
+
+    // Queries.requestReview()
+    requestReview(projectpk, requestingUser) {
+        console.log("user: " + requestingUser);
+        requestingUser = "\"" + requestingUser + "\"";
+        const query = {
+            text: "UPDATE projects SET data = jsonb_set(data::jsonb, '{requested_reviewers}', (data->'requested_reviewers')::jsonb || $2::jsonb, TRUE) WHERE pk=$1",
+            values: [projectpk, requestingUser]
+        }
+
+        this.pool.query(query, (err) => {
+            if(err) {
+                throw(err);
+            }
+        });
+    } // requestReview()
+
+    // Queries.requestReview()
+    addReviewer(projectpk, requestingUser, callback) {
+        this.removeRequest(projectpk, requestingUser, () => {
+            callback();
+        });
+        requestingUser = "\"" + requestingUser + "\"";
+        const query = {
+            text: "UPDATE projects SET data = jsonb_set(data::jsonb, '{reviewers}', (data->'reviewers')::jsonb || $2::jsonb, TRUE) WHERE pk=$1",
+            values: [projectpk, requestingUser]
+        }
+
+        this.pool.query(query, (err) => {
+            if(err) {
+                throw(err);
+            }
+        });
+    } // requestReview()
+
+    // Queries.removeRequest()
+    removeRequest(projectpk, requestingUser, callback) {
+        // requestingUser = "'" + requestingUser + "'";
+        console.log(requestingUser);
+        const query = {
+            text: "UPDATE projects SET data = jsonb_set(data, '{requested_reviewers}', (data->'requested_reviewers')::jsonb - $2) WHERE pk=$1",
+            values: [projectpk, requestingUser]
+        }
+
+        this.pool.query(query, (err, rows) => {
+            if(err) {
+                throw(err);
+            }
+            console.log(rows);
+            callback();
+        });
+    } // removeRequest()
+
+    // Queries.removeRequest()
+    removeReviewer(projectpk, reveiwerpk) {
+        const query = {
+            text: "UPDATE projects SET data = jsonb_set(data::jsonb, array['reviewers'], (data->'reviewers') - $2) WHERE pk=$1",
+            values: [projectpk, reveiwerpk]
+        }
+
+        this.pool.query(query, (err) => {
+            if(err) {
+                throw(err);
+            }
+        });
+    } // removeRequest()
+
+    // Queries.checkRequests()
+    checkRequests(userpk, callback) {
+        const query = {
+            text: "SELECT pk, title, data->'requested_reviewers' AS requests, data->'reviewers' AS reviewers FROM projects WHERE owner=$1",
+            values: [userpk]
+        }
+
+        this.pool.query(query, (err, rows) => {
+            if(err) {
+                throw(err);
+            }
+            console.log(rows.rows);
+            callback(rows.rows);
+        });
+    } // checkRequests()
 
     // Recommends projects based on tags that users prefer
     recommendProjects(tags, callback) {
@@ -304,8 +461,7 @@ class queries {
             if (err){
                 throw(err);
             }
-            
-            return callback(rows);
+            return callback(rows.rows);
         });
     }
 
