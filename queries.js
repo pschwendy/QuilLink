@@ -6,10 +6,16 @@ class queries {
     // Constructor
     // Connects pool to DB
     constructor() {
-        this.pool = new Pool({
+        /*this.pool = new Pool({
             user: 'quillink',
             database: 'quillink_db',
             password: 'supersecretpassword',
+            port: 5432,
+        });*/
+        this.pool = new Pool({
+            user: 'kangzufgdpbqrc',
+            database: 'dbhn5f3mhik780',
+            password: '5e437a2007bf709eec085261cc500f4603b964737efde32fe288f38d824d9fa6',
             port: 5432,
         });
         this.pool.connect();
