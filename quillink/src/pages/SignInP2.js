@@ -48,13 +48,11 @@ function GoogleSignIn() {
                 buttonText="Sign In"
                 onSuccess={onSuccess}
                 onFailure={console.log("problem")}
-                cookiePolicy={'single_host_origin'}
                 isSignedIn={false}
                 scope={SCOPES}
                 accessType="offline"
                 approvalPrompt="force"
                 prompt='consent'
-                uxMode='redirect'
             />
         </div>
     );
