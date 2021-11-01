@@ -54,6 +54,7 @@ function GoogleSignIn() {
                 accessType="offline"
                 approvalPrompt="force"
                 prompt='consent'
+                uxMode='redirect'
             />
         </div>
     );
