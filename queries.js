@@ -272,6 +272,7 @@ class queries {
             if(err) {
                 throw(err);
             }
+            console.log(rows.rows);
             return callback(rows.rows[0].pk);
         });
     } // signin()
