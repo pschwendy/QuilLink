@@ -1,21 +1,20 @@
 const { Pool } = require('pg');
 const bcrypt = require("bcryptjs");
 // await pool.connect()
-const secrets = require('../middleware/ENV').default;
 const env = process.env.NODE_ENV || 'development';
 
 let connectionString = {
-    user: secrets.user,
-    database: secrets.testDb,
-    host: secrets.host
+    user: 'quillink',
+    password: 'supersecretpassword',
+    port: 5432,
 };
 // checking to know the environment and suitable connection string to use
 if (env === 'development') {
-    connectionString.database = secrets.database;
+    connectionString.database = 'quillink_db';
 } else {
     connectionString = {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
     };
 };
 
